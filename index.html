@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="cs"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GX Technik · Montážní příručka</title>
+<style>
+:root{--ink:#132437;--blue:#165997;--line:#d6dfe5;--paper:#f3f6f8;font:16px/1.5 Inter,Arial,sans-serif;color:var(--ink);background:var(--paper)}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer}a{color:var(--blue)}header,footer{background:white;border-block:1px solid var(--line)}.wrap,main{width:min(1060px,calc(100% - 40px));margin:auto}.bar{display:flex;justify-content:space-between;align-items:center;padding-block:16px}.word{font-size:22px;font-weight:800;text-decoration:none;color:var(--ink)}.word b{background:var(--ink);color:white;padding:4px 9px;font-style:italic;border-radius:5px}.action{border:0;border-radius:7px;padding:10px 16px;background:var(--blue);color:white;font-weight:650}main{min-height:75vh;padding-block:30px 56px}.hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#142b40,#1c547c);color:white;padding:clamp(24px,5vw,60px);border-radius:16px}.hero:before{content:'';position:absolute;inset:0 0 0 45%;opacity:.26;background:repeating-radial-gradient(circle at 100% 85%,transparent 0 27px,#85c6ea 28px 29px,transparent 30px 50px);pointer-events:none}.hero>*{position:relative}small{font-size:12px;letter-spacing:.1em;font-weight:bold;text-transform:uppercase}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.055em;line-height:1.05;margin:12px 0 25px}input{width:100%;padding:13px 15px;border:1px solid #9caebc;border-radius:7px;min-width:0}.hero input{max-width:550px}h2{font-size:24px;letter-spacing:-.04em;margin:32px 0 13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{color:inherit;text-decoration:none;display:flex;gap:16px;align-items:center;background:white;padding:22px;border:1px solid var(--line);border-radius:10px}.tile:hover,.tile:focus-visible{border-color:var(--blue);background:#fafdff}.icon{display:grid;place-items:center;width:54px;height:54px;flex:none;background:#e8f1f8;color:var(--blue);border-radius:10px}.tile strong,.tile span em{display:block}.tile strong{font-size:19px}.tile em{font-size:14px;color:#516475;font-style:normal}.arrow{margin-left:auto;color:var(--blue)}.back{display:inline-block;margin-bottom:20px}.panel,details{background:white;border:1px solid var(--line);border-radius:10px;padding:20px;margin:12px 0}summary{cursor:pointer;font-weight:bold}dialog{width:min(450px,calc(100% - 24px));border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--ink)}dialog::backdrop{background:#11243388}.chathead{display:flex;align-items:center;justify-content:space-between}.chathead h2{margin:0}.close{background:white;border:1px solid var(--line);border-radius:6px;padding:6px 12px}.log{max-height:36vh;overflow:auto}.log p{background:var(--paper);border-radius:8px;padding:10px}.log .user{background:#dfecf7;margin-left:24px}form{display:flex;gap:6px;margin-top:12px}footer{font-size:13px;color:#516475;padding-block:17px}.splash{position:fixed;inset:0;z-index:4;background:#162b3f;display:grid;place-content:center;text-align:center;color:white;pointer-events:none;animation:dismiss .25s 1s forwards}.splash img{width:165px;max-height:80px;object-fit:contain;filter:brightness(0) invert(1);animation:turn .9s ease-out}.splash strong{display:block;font-size:28px}@keyframes turn{from{transform:perspective(400px) rotateY(-180deg)}to{transform:perspective(400px) rotateY(0)}}@keyframes dismiss{to{visibility:hidden;opacity:0}}@media(max-width:620px){.grid{grid-template-columns:1fr}.tile{padding:15px}.wrap,main{width:calc(100% - 32px)}main{padding-top:16px}}@media(prefers-reduced-motion:reduce){.splash{display:none}}
+</style>
+<div class="splash" aria-hidden="true"><img src="https://gxsolutions.cz/wp-content/uploads/2024/10/Logo-1.svg" alt="" onerror="this.hidden=true"><strong>GX Technik</strong></div>
+<header><div class="wrap bar"><a href="#" class="word"><b>GX</b> Technik</a><button class="action" id="ask">Poradna GX</button></div></header>
+<main id="main"></main><footer><div class="wrap">GX Solutions Bohemia · Návrh montážní příručky</div></footer>
+<dialog id="chat"><div class="chathead"><h2>Poradna GX</h2><button class="close" id="closeChat">Zavřít</button></div><p>Ukázkový režim. Firemně schválené odpovědi zatím čekají na doplnění.</p><div class="log" id="log" role="log" aria-live="polite"></div><form id="question"><input id="query" aria-label="Dotaz pro poradnu" placeholder="Napiš svůj dotaz…" required maxlength="500"><button class="action">Odeslat</button></form></dialog>
+<script>
+const groups=[
+ {name:'Vysokozdvižné vozíky',tag:'VZV · manipulační technika',modules:['GX ActiveSafety','GX Store'],icon:'M3 15h4V8h7l3 7v3H3z M8 8v7h8 M19 4v15h5 M6 18a2 2 0 1 0 .1 0 M15 18a2 2 0 1 0 .1 0'},
+ {name:'Nákladní vozidla',tag:'Trucky · tahače',modules:['GX Truck'],icon:'M2 6h13v11H2z M15 10h4l4 4v3h-8 M6 17a2 2 0 1 0 .1 0 M19 17a2 2 0 1 0 .1 0'},
+ {name:'Autobusy',tag:'Osobní doprava',modules:['Palubní jednotka'],icon:'M2 6h19l2 6v5H2z M3 12h18 M8 7v5 M14 7v5 M6 17a2 2 0 1 0 .1 0 M19 17a2 2 0 1 0 .1 0'},
+ {name:'Pracovní stroje',tag:'Stavební a provozní technika',modules:['GX Build'],icon:'M2 17h12a2 2 0 0 1 0 4H2a2 2 0 0 1 0-4z M5 17v-7h6l2 7 M12 12l4-9 5 9 M21 12l2 4h-5z'}];
+const main=document.querySelector('main');
+const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
+const escapeText=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
+function tile(group,i,j){
+ const module=j!==undefined;
+ return '<a class="tile" href="#g/'+i+(module?'/'+j:'')+'"><span class="icon"><svg aria-hidden="true" width="34" height="34" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="'+group.icon+'"/></svg></span><span><strong>'+(module?group.modules[j]:group.name)+'</strong><em>'+(module?group.name:group.tag)+'</em></span><b class="arrow" aria-hidden="true">→</b></a>';
+}
+function results(value){
+ const q=normalize(value), cards=[];
+ groups.forEach((g,i)=>{
+ if(!q||normalize(g.name+' '+g.tag).includes(q)) cards.push(tile(g,i));
+ if(q) g.modules.forEach((m,j)=>{if(normalize(m).includes(q)) cards.push(tile(g,i,j));});
+ });
+ document.querySelector('#heading').textContent=q?'Výsledky hledání':'Typ montáže';
+ document.querySelector('#cards').innerHTML=cards.join('')||'<p>Žádná shoda. Zkus název modulu nebo stroje.</p>';
+}
+function render(){
+ const route=location.hash.match(/^#g\/(\d+)(?:\/(\d+))?$/);
+ const g=route&&groups[route[1]],j=route?.[2];
+ if(!g||(j!==undefined&&!g.modules[j])){
+ main.innerHTML='<section class="hero"><small>GX Solutions Bohemia</small><h1>Montážní příručka</h1><input id="search" type="search" aria-label="Hledat v příručce" placeholder="Hledat modul, stroj nebo označení…"></section><h2 id="heading"></h2><div id="cards" class="grid"></div>';
+ const search=document.querySelector('#search');search.oninput=()=>results(search.value);results('');
+ }else if(j===undefined){
+ main.innerHTML='<a class="back" href="#">← Příručka</a><section class="hero"><small>Typ montáže</small><h1>'+g.name+'</h1></section><h2>Moduly a systémy</h2><div class="grid">'+g.modules.map((m,k)=>tile(g,route[1],k)).join('')+'</div>';
+ }else{
+ main.innerHTML='<a class="back" href="#g/'+route[1]+'">← '+g.name+'</a><section class="hero"><small>Ukázková karta</small><h1>'+g.modules[j]+'</h1></section><h2>Podklady k montáži</h2>'+['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce'].map(t=>'<details><summary>'+t+'</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>').join('');
+ }
+}
+window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
+const chat=document.querySelector('#chat'),query=document.querySelector('#query'),log=document.querySelector('#log');
+document.querySelector('#ask').onclick=()=>{chat.showModal();query.focus()};
+document.querySelector('#closeChat').onclick=()=>chat.close();
+document.querySelector('#question').onsubmit=e=>{
+ e.preventDefault();const value=query.value.trim();if(!value)return;
+ log.insertAdjacentHTML('beforeend','<p class="user">'+escapeText(value)+'</p><p>Pro tento dotaz zatím nemáme schválenou odpověď.</p>');
+ query.value='';log.scrollTop=log.scrollHeight;query.focus();
+};
+</script></html>
