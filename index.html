@@ -88,13 +88,89 @@ function tile(group,i,j){
  return '<a class="tile" href="#g/'+i+(module?'/'+j:'')+'"><span class="icon"><svg aria-hidden="true" width="34" height="34" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="'+group.icon+'"/></svg></span><span><strong>'+(module?group.modules[j]:group.name)+'</strong><em>'+(module?group.name:group.tag)+'</em></span><b class="arrow" aria-hidden="true">→</b></a>';
 }
 function results(value){
- const q=normalize(value), cards=[];
+ const q=normalize(value);
+ const cards=[];
+
+ // Katalog podsekcí a dokumentace
+ const entries=[
+  {
+   title:'GX Store',
+   subtitle:'Systém pro vysokozdvižné vozíky',
+   href:'#g/0/1',
+   keywords:'store vzv voziky vysokozdvizne'
+  },
+  {
+   title:'Obecná zapojení VZV',
+   subtitle:'GX Store · Elektrická schémata',
+   href:'#g/0/1/wiring',
+   keywords:'obecne zapojeni schema schemata vzv elektro'
+  },
+  {
+   title:'Jungheinrich EFG 2xx',
+   subtitle:'GX Store · Schéma zapojení 48 V',
+   href:'#g/0/1/efg2xx',
+   keywords:'jungheinrich efg 2xx efg2xx 48v 48 v schema zapojeni pdf maier tdm-q uwb rfid gocan'
+  },
+  {
+   title:'Moduly a zařízení',
+   subtitle:'GX Store · Technická dokumentace',
+   href:'#g/0/1/modules',
+   keywords:'moduly zarizeni jednotky tdm uwb rfid gocan'
+  },
+  {
+   title:'Montážní postupy',
+   subtitle:'GX Store · Instalace',
+   href:'#g/0/1/installation',
+   keywords:'montazni postup instalace kontrola'
+  },
+  {
+   title:'Diagnostika a řešení problémů',
+   subtitle:'GX Store · Servis',
+   href:'#g/0/1/diagnostics',
+   keywords:'diagnostika poruchy problemy zavady servis'
+  }
+ ];
+
+ // Původní hlavní kategorie a moduly
  groups.forEach((g,i)=>{
- if(!q||normalize(g.name+' '+g.tag).includes(q)) cards.push(tile(g,i));
- if(q) g.modules.forEach((m,j)=>{if(normalize(m).includes(q)) cards.push(tile(g,i,j));});
+  if(!q || normalize(g.name+' '+g.tag).includes(q)){
+   cards.push(tile(g,i));
+  }
+
+  if(q){
+   g.modules.forEach((m,j)=>{
+    if(normalize(m).includes(q) && !(i===0 && j===1)){
+     cards.push(tile(g,i,j));
+    }
+   });
+  }
  });
- document.querySelector('#heading').textContent=q?'Výsledky hledání':'Typ montáže';
- document.querySelector('#cards').innerHTML=cards.join('')||'<p>Žádná shoda. Zkus název modulu nebo stroje.</p>';
+
+ // Vyhledávání uvnitř podsekcí
+ if(q){
+  entries.forEach(e=>{
+   const searchable=normalize(
+    e.title+' '+e.subtitle+' '+e.keywords
+   );
+
+   if(searchable.includes(q)){
+    cards.push(
+     '<a class="tile" href="'+e.href+'">'+
+     '<span class="icon" aria-hidden="true">⌕</span>'+
+     '<span><strong>'+e.title+'</strong>'+
+     '<em>'+e.subtitle+'</em></span>'+
+     '<b class="arrow" aria-hidden="true">→</b></a>'
+    );
+   }
+  });
+ }
+
+ document.querySelector('#heading').textContent=
+  q?'Výsledky hledání':'Typ montáže';
+
+ document.querySelector('#cards').innerHTML=
+  cards.join('')||
+  '<p>Žádná shoda. Zkus název modulu, zkratku nebo typ vozíku.</p>'
 }
 function render(){
  const route=location.hash.match(/^#g\/(\d+)(?:\/(\d+))?(?:\/([a-z0-9-]+))?$/);
