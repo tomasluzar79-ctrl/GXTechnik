@@ -190,7 +190,7 @@ function render(){
       .join('');
  }
 }
-
+}
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
 const chat=document.querySelector('#chat'),query=document.querySelector('#query'),log=document.querySelector('#log');
 function openChat() { chat.showModal(); query.focus(); }
