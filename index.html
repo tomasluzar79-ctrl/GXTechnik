@@ -1,469 +1,66 @@
 <!doctype html>
-<html lang="cs"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,interactive-widget=resizes-content">
-<title>GX Technik · Montážní příručka</title>
+<html lang="cs">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GX Technik | Technické informace</title>
 <style>
-:root{--ink:#132437;--blue:#094889;--line:#d6dfe5;--paper:#f3f6f8;font:16px/1.5 Inter,Arial,sans-serif;color:var(--ink);background:var(--paper)}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button,a{touch-action:manipulation}button{cursor:pointer}a{color:var(--blue)}header,footer{background:white;border-block:1px solid var(--line)}.wrap,main{width:min(1060px,calc(100% - 40px));margin:auto}.bar{display:flex;justify-content:space-between;align-items:center;padding-block:16px}.word{font-size:22px;font-weight:800;text-decoration:none;color:var(--ink)}.word b{background:var(--ink);color:white;padding:4px 9px;font-style:italic;border-radius:5px}.action{border:0;border-radius:7px;padding:10px 16px;background:var(--blue);color:white;font-weight:650}main{min-height:75vh;padding-block:30px 56px}.hero{position:relative;overflow:hidden;background:linear-gradient(115deg,#073769,#094889);color:white;padding:clamp(24px,5vw,60px);border-radius:16px}.hero:before{content:'';position:absolute;inset:0 0 0 45%;opacity:.26;background:repeating-radial-gradient(circle at 100% 85%,transparent 0 27px,#85c6ea 28px 29px,transparent 30px 50px);pointer-events:none}.hero>*{position:relative}small{font-size:12px;letter-spacing:.1em;font-weight:bold;text-transform:uppercase}h1{font-size:clamp(34px,5vw,58px);letter-spacing:-.055em;line-height:1.05;margin:12px 0 25px}input{width:100%;padding:13px 15px;border:1px solid #9caebc;border-radius:7px;min-width:0}.hero input{max-width:550px}h2{font-size:24px;letter-spacing:-.04em;margin:32px 0 13px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.tile{color:inherit;text-decoration:none;display:flex;gap:16px;align-items:center;background:white;padding:22px;border:1px solid var(--line);border-radius:10px}.tile:hover,.tile:focus-visible{border-color:var(--blue);background:#fafdff}.icon{display:grid;place-items:center;width:54px;height:54px;flex:none;background:#e6eff8;color:var(--blue);border-radius:10px}.tile strong,.tile span em{display:block}.tile strong{font-size:19px}.tile em{font-size:14px;color:#516475;font-style:normal}.arrow{margin-left:auto;color:var(--blue)}.back{display:inline-block;margin-bottom:20px}.panel,details{background:white;border:1px solid var(--line);border-radius:10px;padding:20px;margin:12px 0}summary{cursor:pointer;font-weight:bold}dialog{width:min(450px,calc(100% - 24px));border:1px solid var(--line);border-radius:14px;padding:20px;color:var(--ink)}dialog::backdrop{background:#11243388}.chathead{display:flex;align-items:center;justify-content:space-between}.chathead h2{margin:0}.close{background:white;border:1px solid var(--line);border-radius:6px;padding:6px 12px}.log{max-height:36vh;overflow:auto}.log p{background:var(--paper);border-radius:8px;padding:10px}.log .user{background:#dfecf7;margin-left:24px}form{display:flex;gap:6px;margin-top:12px}footer{font-size:13px;color:#516475;padding-block:17px}.splash{position:fixed;inset:0;z-index:4;background:#162b3f;display:grid;place-content:center;text-align:center;color:white;pointer-events:none;visibility:hidden}.splash img{width:165px;max-height:80px;object-fit:contain;filter:brightness(0) invert(1)}.splash strong{display:block;font-size:28px}@keyframes turn{from{transform:perspective(600px) rotateY(-360deg)}to{transform:perspective(600px) rotateY(0)}}@keyframes dismiss{to{visibility:hidden;opacity:0}}@media(max-width:620px){.grid{grid-template-columns:1fr}.tile{padding:15px}.wrap,main{width:calc(100% - 32px)}main{padding-top:16px}}
+:root{--blue:#094889;--light:#eef4fa;--ink:#182d41;--muted:#607287;--line:#dce5ed;--white:#fff}*{box-sizing:border-box}body{margin:0;background:#f5f8fb;color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Arial,sans-serif}button,input,textarea,select{font:inherit}button{cursor:pointer}.wrap{max-width:1060px;margin:auto;padding:0 18px}header{background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}.bar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:75px}.brand{display:flex;align-items:center;gap:11px;text-decoration:none;color:var(--blue)}.brandmark{display:flex;align-items:center;justify-content:center;width:51px;height:51px;border-radius:9px;background:var(--blue);color:#fff;font-weight:900;font-size:25px;letter-spacing:-3px}.brandname{font-size:24px;letter-spacing:-1.4px}.brandname small{display:block;font-size:12px;letter-spacing:.2px;color:var(--muted);margin-top:-6px}.btn{background:var(--blue);border:1px solid var(--blue);border-radius:10px;color:#fff;padding:10px 15px;font-weight:650}.btn.secondary{background:#fff;color:var(--blue)}.btn:disabled{opacity:.5;cursor:not-allowed}main{padding-top:26px;padding-bottom:70px}.hero{background:linear-gradient(115deg,#e7f0f9,#fff);border:1px solid var(--line);border-radius:18px;padding:28px;margin-bottom:24px}.hero h1{color:var(--blue);margin:0 0 6px;font-size:clamp(25px,4vw,36px)}.hero p{color:var(--muted);margin:0 0 18px}.search{width:100%;padding:14px 16px;border:1px solid #b9cad9;border-radius:11px;background:white;outline-color:var(--blue)}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.tile{display:flex;flex-direction:column;align-items:flex-start;min-height:166px;padding:20px;border:1px solid var(--line);border-radius:15px;background:white;color:var(--ink);text-decoration:none;text-align:left;transition:.15s}.tile:hover,.record:hover{border-color:#9cb9d4;box-shadow:0 5px 20px #163d5e0c}.tile .ico{font-size:40px;line-height:1.1;margin-bottom:16px}.tile strong{color:var(--blue);font-size:18px}.tile span:last-child{font-size:12px;color:var(--muted)}h2{font-size:21px;margin:27px 0 14px}.record{display:block;width:100%;background:#fff;border:1px solid var(--line);border-radius:13px;padding:17px 19px;text-align:left;margin:10px 0;color:var(--ink)}.record strong{font-size:17px}.meta{color:var(--muted);font-size:13px;margin-top:5px}.excerpt{margin-top:8px;color:#465e73;font-size:14px}.empty{background:#fff;border:1px dashed #becfdf;border-radius:13px;padding:28px;text-align:center;color:var(--muted)}.back{background:none;border:0;color:var(--blue);padding:0;margin-bottom:18px;font-weight:650}.panel{background:white;border:1px solid var(--line);border-radius:15px;padding:24px}.content{white-space:pre-wrap;overflow-wrap:anywhere}.attachments{display:grid;gap:9px;margin-top:12px}.attachment{display:flex;align-items:center;gap:10px;padding:12px;border:1px solid var(--line);border-radius:9px;color:var(--blue);text-decoration:none;overflow-wrap:anywhere}.badge{font-size:12px;font-weight:700;color:var(--blue);background:var(--light);padding:5px 9px;border-radius:20px}.row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.spacer{flex:1}.field{display:grid;gap:6px;margin:14px 0}.field label{font-size:14px;font-weight:650}.field input,.field select,.field textarea{width:100%;padding:11px 12px;border:1px solid #b9cad9;border-radius:9px;background:#fff}.field textarea{min-height:160px;resize:vertical}.notice{background:#fff7e8;border:1px solid #f0d5a1;color:#68480e;border-radius:11px;padding:13px 16px;margin-bottom:16px;font-size:14px}.status{font-size:13px;color:var(--muted)}.hide{display:none!important}footer{border-top:1px solid var(--line);padding:18px 0;color:var(--muted);font-size:12px}@media(max-width:740px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bar{min-height:66px}.brandname{font-size:19px}.brandmark{width:44px;height:44px;font-size:22px}.hero{padding:19px}.tile{min-height:150px;padding:15px}.panel{padding:17px}.btn{padding:9px 11px}}
 
-.mobile-nav { display: none; }
-.log p { overflow-wrap: anywhere; }
-@media (max-width: 760px) {
-  body { padding-bottom: calc(66px + env(safe-area-inset-bottom)); }
-  .wrap, main { width: calc(100% - 32px); }
-  .bar { padding-block: 9px; }
-  .word, .back { display: inline-flex; align-items: center; min-height: 44px; gap: 6px; }
-  #ask { display: none; }
-  main { padding-block: 12px 28px; min-height: auto; }
-  .hero { padding: 18px; border-radius: 12px; }
-  h1 { font-size: clamp(28px, 7vw, 36px); margin: 6px 0 14px; }
-  h1:last-child { margin-bottom: 0; }
-  h2 { font-size: 22px; margin: 20px 0 10px; }
-  .grid { grid-template-columns: 1fr; gap: 8px; }
-  .tile { gap: 12px; padding: 12px; }
-  .icon { width: 44px; height: 44px; }
-  .back { margin-bottom: 4px; }
-  details { padding: 0 16px; }
-  summary { padding-block: 14px; }
-  .mobile-nav { display: flex; position: fixed; bottom: 0; inset-inline: 0; z-index: 2;
-    padding: 6px 16px calc(6px + env(safe-area-inset-bottom)); gap: 8px;
-    background: white; border-top: 1px solid var(--line); }
-  .mobile-nav > * { flex: 1; min-height: 48px; display: grid; place-items: center;
-    text-decoration: none; font-weight: bold; border-radius: 7px; }
-  .mobile-nav a { background: #e6eff8; }
-  dialog[open] { margin: 0; inset: auto 0 0; width: 100%; max-width: none;
-    height: min(600px, 100dvh); max-height: 100dvh; display: flex; flex-direction: column;
-    border-radius: 18px 18px 0 0; padding: 16px 16px calc(12px + env(safe-area-inset-bottom)); }
-  dialog > p { margin-block: 10px; }
-  .log { flex: 1; min-height: 0; max-height: none; }
-  body:has(dialog[open]) { overflow: hidden; }
-  .close, form button { min-height: 44px; }
-}
-
-.word { display: inline-flex; align-items: center; gap: 14px; }
-.word span { border-left: 1px solid #b9cce0; padding-left: 14px; color: var(--blue); }
-.gx-logo { display: block; width: 135px; height: auto; }
-.splash { background: #fff; color: var(--blue); }
-.splash img { width: 169px; filter: none; }
-.splash strong { margin-top: 12px; font-size: 20px; }
-@media(max-width:760px){ .word .gx-logo { width: 112px; } .word span { font-size: 19px; } }
-
-.splash.is-playing { visibility: visible; animation: dismiss .24s 1.65s forwards; }
-.splash.is-playing img { animation: turn 1.45s ease-in-out both; }
-@media (prefers-reduced-motion: reduce) {
-  .splash.is-playing img { animation: none; }
-  .splash.is-playing { animation-delay: .65s; }
-}
+/* Firemní logo a úvodní animace */
+.brandmark,.brandname{display:none!important}
+.brand-logo{display:block;width:169px;max-width:45vw;height:auto;object-fit:contain}
+.brand-caption{font-size:12px;color:var(--muted);font-weight:700;margin-left:4px;white-space:nowrap}
+.splash{position:fixed;inset:0;z-index:9999;display:grid;place-items:center;background:radial-gradient(circle at 50% 38%,#123b66 0%,#061c36 62%,#031326 100%);opacity:1;visibility:visible;transition:opacity .55s ease,visibility .55s ease}
+.splash.done{opacity:0;visibility:hidden;pointer-events:none}
+.splash-inner{display:flex;flex-direction:column;align-items:center;gap:30px;padding:22px;text-align:center;color:#fff}
+.splash-orbit{width:min(76vw,320px);height:min(76vw,320px);border-radius:50%;border:2px solid #169de7;box-shadow:0 0 23px #169de799,inset 0 0 40px #0c74bd44;display:grid;place-items:center;perspective:900px;position:relative}
+.splash-orbit::after{content:'';position:absolute;inset:15px;border:1px solid #1b88d46b;border-radius:50%}
+.splash-logo{width:76%;height:auto;filter:brightness(0) invert(1) drop-shadow(0 0 6px #58baff);animation:gxSpin 1.8s cubic-bezier(.3,.1,.15,1) both;transform-style:preserve-3d;backface-visibility:visible}
+.splash-name{font-size:25px;font-weight:750;letter-spacing:.2px}
+.splash-sub{color:#bfd6ee;font-size:13px}
+@keyframes gxSpin{0%{transform:rotateY(0deg) scale(.76);opacity:.15}25%{opacity:1}70%{transform:rotateY(540deg) scale(1.05)}100%{transform:rotateY(720deg) scale(1)}}
+.tile .ico{display:flex;align-items:center;justify-content:flex-start;height:52px;margin-bottom:13px;color:var(--blue)}
+.tile .ico svg{width:58px;height:50px;stroke:currentColor;fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:740px){.brand-logo{width:143px}.brand-caption{font-size:11px}.tile .ico svg{width:53px}}
+@media(prefers-reduced-motion:reduce){.splash-logo{animation:none}.splash{transition:none}}
 </style>
-<div class="splash" aria-hidden="true"><img class="gx-logo" width="169" height="51" alt="GX solutions" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22169%22%20height%3D%2251%22%20viewBox%3D%220%200%20169%2051%22%3E%3Cdefs%3E%3Cmask%20id%3D%22cut%22%3E%3Crect%20width%3D%2251%22%20height%3D%2251%22%20fill%3D%22white%22%2F%3E%3Ctext%20x%3D%22-1%22%20y%3D%2251%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22900%22%20letter-spacing%3D%22-3%22%3EGX%3C%2Ftext%3E%3C%2Fmask%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22%23094889%22%3E%3Crect%20width%3D%2251%22%20height%3D%2251%22%20rx%3D%226%22%20mask%3D%22url(%23cut)%22%2F%3E%3Ctext%20x%3D%2254%22%20y%3D%2241%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2229%22%20letter-spacing%3D%22-1.5%22%3Esolutions%3C%2Ftext%3E%3Ctext%20x%3D%22161%22%20y%3D%2219%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%228%22%3E%C2%AE%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E"><strong>Technik</strong></div>
-<header><div class="wrap bar"><a href="#" class="word"><img class="gx-logo" width="169" height="51" alt="GX solutions" src="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22169%22%20height%3D%2251%22%20viewBox%3D%220%200%20169%2051%22%3E%3Cdefs%3E%3Cmask%20id%3D%22cut%22%3E%3Crect%20width%3D%2251%22%20height%3D%2251%22%20fill%3D%22white%22%2F%3E%3Ctext%20x%3D%22-1%22%20y%3D%2251%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2236%22%20font-weight%3D%22900%22%20letter-spacing%3D%22-3%22%3EGX%3C%2Ftext%3E%3C%2Fmask%3E%3C%2Fdefs%3E%3Cg%20fill%3D%22%23094889%22%3E%3Crect%20width%3D%2251%22%20height%3D%2251%22%20rx%3D%226%22%20mask%3D%22url(%23cut)%22%2F%3E%3Ctext%20x%3D%2254%22%20y%3D%2241%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%2229%22%20letter-spacing%3D%22-1.5%22%3Esolutions%3C%2Ftext%3E%3Ctext%20x%3D%22161%22%20y%3D%2219%22%20font-family%3D%22Arial%2Csans-serif%22%20font-size%3D%228%22%3E%C2%AE%3C%2Ftext%3E%3C%2Fg%3E%3C%2Fsvg%3E"><span>Technik</span></a><button class="action" id="ask">Poradna GX</button></div></header>
-<main id="main"></main><footer><div class="wrap">GX Solutions Bohemia · Návrh montážní příručky</div></footer>
-<nav class="mobile-nav" aria-label="Hlavní nabídka"><a href="#">Příručka</a><button class="action" id="mobileAsk">Poradna GX</button></nav>
-<dialog id="chat" aria-labelledby="chatTitle"><div class="chathead"><h2 id="chatTitle">Poradna GX</h2><button class="close" id="closeChat">Zavřít</button></div><p>Ukázkový režim. Firemně schválené odpovědi zatím čekají na doplnění.</p><div class="log" id="log" role="log" aria-live="polite"></div><form id="question"><input id="query" aria-label="Dotaz pro poradnu" placeholder="Napiš svůj dotaz…" required maxlength="500"><button class="action">Odeslat</button></form></dialog>
+</head>
+<body>
+<div id="splash" class="splash" aria-label="Spouštění aplikace GX Technik"><div class="splash-inner"><div class="splash-orbit"><img class="splash-logo" src="data:image/png;base64,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" alt="GX Solutions"></div><div class="splash-name">GX Technik</div><div class="splash-sub">Spouštím aplikaci…</div></div></div>
+<header><div class="wrap bar"><a class="brand" href="#" aria-label="GX Technik úvod"><img class="brand-logo" src="data:image/png;base64,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" alt="GX Solutions"><span class="brand-caption">Technik</span></a><div class="row"><span id="roleLabel" class="badge">Technik</span><button id="adminButton" class="btn secondary hide" type="button">+ Nový záznam</button></div></div></header>
+<main class="wrap" id="app"></main>
+<footer><div class="wrap">GX Solutions Bohemia · Interní technické informace</div></footer>
 <script>
-const splash = document.querySelector('.splash');
-function showOpeningLogo() {
-  if (document.visibilityState !== 'visible' || splash.classList.contains('is-playing')) return;
-  splash.classList.add('is-playing');
-}
-function resetOpeningLogo() {
-  splash.classList.remove('is-playing');
-}
-document.addEventListener('visibilitychange', () => {
-  if (document.hidden) resetOpeningLogo();
-  else showOpeningLogo();
-});
-window.addEventListener('pagehide', resetOpeningLogo);
-window.addEventListener('pageshow', showOpeningLogo);
-showOpeningLogo();
-
-const groups=[
- {name:'Vysokozdvižné vozíky',tag:'VZV · manipulační technika',modules:['GX ActiveSafety','GX Store'],icon:'M3 15h4V8h7l3 7v3H3z M8 8v7h8 M19 4v15h5 M6 18a2 2 0 1 0 .1 0 M15 18a2 2 0 1 0 .1 0'},
- {name:'Nákladní vozidla',tag:'Trucky · tahače',modules:['GX Truck'],icon:'M2 6h13v11H2z M15 10h4l4 4v3h-8 M6 17a2 2 0 1 0 .1 0 M19 17a2 2 0 1 0 .1 0'},
- {name:'Autobusy',tag:'Osobní doprava',modules:['Palubní jednotka'],icon:'M2 6h19l2 6v5H2z M3 12h18 M8 7v5 M14 7v5 M6 17a2 2 0 1 0 .1 0 M19 17a2 2 0 1 0 .1 0'},
- {name:'Pracovní stroje',tag:'Stavební a provozní technika',modules:['GX Build'],icon:'M2 17h12a2 2 0 0 1 0 4H2a2 2 0 0 1 0-4z M5 17v-7h6l2 7 M12 12l4-9 5 9 M21 12l2 4h-5z'}];
-const main=document.querySelector('main');
-const normalize=s=>s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim();
-const escapeText=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;');
-function tile(group,i,j){
- const module=j!==undefined;
- return '<a class="tile" href="#g/'+i+(module?'/'+j:'')+'"><span class="icon"><svg aria-hidden="true" width="34" height="34" viewBox="0 0 26 26" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"><path d="'+group.icon+'"/></svg></span><span><strong>'+(module?group.modules[j]:group.name)+'</strong><em>'+(module?group.name:group.tag)+'</em></span><b class="arrow" aria-hidden="true">→</b></a>';
-}
-function results(value){
- const q=normalize(value);
- const cards=[];
-
- // Katalog podsekcí a dokumentace
- const entries=[
-  {
-   title:'GX Store',
-   subtitle:'Systém pro vysokozdvižné vozíky',
-   href:'#g/0/1',
-   keywords:'store vzv voziky vysokozdvizne'
-  },
-  {
-   title:'Obecná zapojení VZV',
-   subtitle:'GX Store · Elektrická schémata',
-   href:'#g/0/1/wiring',
-   keywords:'obecne zapojeni schema schemata vzv elektro'
-  },
-  {
-   title:'Jungheinrich EFG 2xx',
-   subtitle:'GX Store · Schéma zapojení 48 V',
-   href:'#g/0/1/efg2xx',
-   keywords:'jungheinrich efg 2xx efg2xx 48v 48 v schema zapojeni pdf maier tdm-q uwb rfid gocan'
-  }, 
-  {
-   title:'TDM-Q.EXT1',
-   subtitle:'GX Store · Řídicí jednotka · Manuál PDF',
-   href:'#g/0/1/tdm-q-ext1',
-   keywords:'tdm q ext1 tdm-q tdmq ridici jednotka modul konektory can rs232 1-wire manual navod'
-  },
-{
-   title:'Moduly a zařízení',
-   subtitle:'GX Store · Technická dokumentace',
-   href:'#g/0/1/modules',
-   keywords:'moduly zarizeni jednotky tdm uwb rfid gocan'
-  },
-  {
-   title:'Montážní postupy',
-   subtitle:'GX Store · Instalace',
-   href:'#g/0/1/installation',
-   keywords:'montazni postup instalace kontrola'
-  },
-  {
-   title:'Diagnostika a řešení problémů',
-   subtitle:'GX Store · Servis',
-   href:'#g/0/1/diagnostics',
-   keywords:'diagnostika poruchy problemy zavady servis'
-  }
- ];
-
- // Původní hlavní kategorie a moduly
- groups.forEach((g,i)=>{
-  if(!q || normalize(g.name+' '+g.tag).includes(q)){
-   cards.push(tile(g,i));
-  }
-
-  if(q){
-   g.modules.forEach((m,j)=>{
-    if(normalize(m).includes(q) && !(i===0 && j===1)){
-     cards.push(tile(g,i,j));
-    }
-   });
-  }
- });
-
- // Vyhledávání uvnitř podsekcí
- if(q){
-  entries.forEach(e=>{
-   const searchable=normalize(
-    e.title+' '+e.subtitle+' '+e.keywords
-   );
-
-   if(searchable.includes(q)){
-    cards.push(
-     '<a class="tile" href="'+e.href+'">'+
-     '<span class="icon" aria-hidden="true">⌕</span>'+
-     '<span><strong>'+e.title+'</strong>'+
-     '<em>'+e.subtitle+'</em></span>'+
-     '<b class="arrow" aria-hidden="true">→</b></a>'
-    );
-   }
-  });
- }
-
- document.querySelector('#heading').textContent=
-  q?'Výsledky hledání':'Typ montáže';
-
- document.querySelector('#cards').innerHTML=
-  cards.join('')||
-  '<p>Žádná shoda. Zkus název modulu, zkratku nebo typ vozíku.</p>'
-}
-function render(){
- const route=location.hash.match(/^#g\/(\d+)(?:\/(\d+))?(?:\/([a-z0-9-]+))?$/);
- const g=route&&groups[route[1]];
- const j=route?.[2];
- const section=route?.[3];
- const isGXStore=route?.[1]==='0'&&j==='1';
-
- const back=(href,label)=>
-   '<a class="back" href="'+href+'">← '+label+'</a>';
-
- const sectionTile=(title,subtitle,href)=>
-   '<a class="tile" href="'+href+'">'+
-   '<span class="icon" aria-hidden="true">▣</span>'+
-   '<span><strong>'+title+'</strong><em>'+subtitle+'</em></span>'+
-   '<b class="arrow" aria-hidden="true">→</b></a>';
-
- const storeSections=[
-  ['Obecná zapojení VZV','Schémata podle značky a typu vozíku','wiring'],
-  ['Moduly a zařízení','Technické parametry a návody k modulům','modules'],
-  ['Montážní postupy','Postupy instalace a kontrola funkce','installation'],
-  ['Diagnostika a řešení problémů','Závady, kontroly a doporučené postupy','diagnostics']
- ];
-
- if(!g||(j!==undefined&&!g.modules[j])){
-  main.innerHTML=
-   '<section class="hero"><small>GX Solutions Bohemia</small>'+
-   '<h1>Montážní příručka</h1>'+
-   '<input id="search" type="search" aria-label="Hledat v příručce" '+
-   'placeholder="Hledat modul, stroj nebo označení…"></section>'+
-   '<h2 id="heading"></h2><div id="cards" class="grid"></div>';
-
-  const search=document.querySelector('#search');
-  search.oninput=()=>results(search.value);
-  results('');
-  return;
- }
-
- if(j===undefined){
-  main.innerHTML=
-   back('#','Příručka')+
-   '<section class="hero"><small>Typ montáže</small>'+
-   '<h1>'+g.name+'</h1></section>'+
-   '<h2>Moduly a systémy</h2>'+
-   '<div class="grid">'+
-   g.modules.map((m,k)=>tile(g,route[1],k)).join('')+
-   '</div>';
-  return;
- }
-
- if(isGXStore){
-  const base='#g/0/1';
-
-  if(!section){
-   main.innerHTML=
-    back('#g/0','Vysokozdvižné vozíky')+
-    '<section class="hero"><small>Technická dokumentace GX</small>'+
-    '<h1>GX Store</h1>'+
-    '<p>Schémata zapojení, moduly, montážní postupy a diagnostika.</p>'+
-    '</section>'+
-    '<h2>Dokumentace</h2>'+
-    '<div class="grid">'+
-    storeSections.map(s=>sectionTile(s[0],s[1],base+'/'+s[2])).join('')+
-    '</div>';
-   return;
-  }
-
-  if(section==='wiring'){
-   main.innerHTML=
-    back(base,'GX Store')+
-    '<section class="hero"><small>Technická dokumentace GX</small>'+
-    '<h1>Obecná zapojení VZV</h1></section>'+
-    '<h2>Schémata podle typu vozíku</h2>'+
-    '<div class="grid">'+
-    sectionTile(
-      'Jungheinrich EFG 2xx',
-      'Elektrické schéma zapojení · 48 V DC',
-      base+'/efg2xx'
-    )+
-    '</div>';
-   return;
-  }
-
-  if(section==='efg2xx'){
-   const pdfId='1yzHfHKowxfq0ZTmCdIjTr3Zo7UHJGdKh';
-   const pdfPreview='https://drive.google.com/file/d/'+pdfId+'/preview';
-   const pdfOpen='https://drive.google.com/file/d/'+pdfId+'/view';
-
-   main.innerHTML=`
-    ${back(base+'/wiring','Obecná zapojení VZV')}
-
-    <section class="hero">
-     <small>Technická dokumentace GX · Schéma zapojení</small>
-     <h1>Jungheinrich EFG 2xx</h1>
-     <p>Elektrické schéma instalace systému GX.</p>
-    </section>
-
-    <h2>Schéma zapojení</h2>
-    <div class="panel">
-     <p><strong>Originální výkres – PDF</strong></p>
-     <p>Dokument je načítán z Google Drive.</p>
-
-     <div style="width:100%;height:clamp(420px,75vh,850px);
-                 background:#edf1f5;border:1px solid #d6dfe5;
-                 border-radius:8px;overflow:hidden">
-      <iframe
-       src="${pdfPreview}"
-       title="Schéma zapojení Jungheinrich EFG 2xx"
-       style="width:100%;height:100%;border:0"
-       loading="lazy"
-       allow="fullscreen">
-      </iframe>
-     </div>
-
-     <p style="margin-top:16px">
-      <a class="action"
-         style="display:inline-block;text-decoration:none"
-         href="${pdfOpen}"
-         target="_blank"
-         rel="noopener noreferrer">
-       Otevřít celé schéma ↗
-      </a>
-     </p>
-    </div>
-
-    <h2>Technický přehled</h2>
-
-    <details open>
-     <summary>Základní informace</summary>
-     <p><strong>Vozík:</strong> Jungheinrich EFG 2xx</p>
-     <p><strong>Napájení vozíku:</strong> 48 V DC</p>
-     <p><strong>Typ dokumentu:</strong> Elektrické schéma</p>
-    </details>
-
-    <details>
-     <summary>Použité komponenty</summary>
-     <ul>
-      <li>Jednotka TDM-Q</li>
-      <li>Čtečka TM-UWB.2</li>
-      <li>Čtečka TM-RFID-MIFARE</li>
-      <li>Modul TM-GOCAN-RD2</li>
-      <li>DC/DC měnič</li>
-      <li>Relé SPDT</li>
-      <li>GSM a GPS anténa</li>
-     </ul>
-     <p>Konkrétní svorky a propojení ověř v originálním výkresu.</p>
-    </details>
-
-    <details>
-     <summary>Montážní poznámky</summary>
-     <p>Podrobný montážní postup zatím není vložen.</p>
-    </details>
-   `;
-   return;
-  }
-
-   if(section==='modules'){
-    main.innerHTML=
-     back(base,'GX Store')+
-     '<section class="hero"><small>Technická dokumentace GX</small>'+
-     '<h1>Moduly a zařízení</h1>'+
-     '<p>Technické informace a návody k jednotlivým modulům.</p></section>'+
-     '<h2>Dostupné moduly</h2>'+
-     '<div class="grid">'+
-     sectionTile(
-       'TDM-Q.EXT1',
-       'Řídicí jednotka · Návod 1.01',
-       base+'/tdm-q-ext1'
-     )+
-     '</div>';
-    return;
-   }
-
-   if(section==='tdm-q-ext1'){
-    const pdfId='1YRZUKmmRD6I9AwIT6lT_Ua7u5UC8X_EF';
-    const pdfView='https://drive.google.com/file/d/'+pdfId+'/view';
-    const pdfPreview='https://drive.google.com/file/d/'+pdfId+'/preview';
-    const pdfDownload='https://drive.google.com/uc?export=download&id='+pdfId;
-
-    main.innerHTML=`
-     ${back(base+'/modules','Moduly a zařízení')}
-
-     <section class="hero">
-      <small>GX Store · Moduly a zařízení</small>
-      <h1>TDM-Q.EXT1</h1>
-      <p>Řídicí jednotka systému TDM</p>
-     </section>
-
-     <h2>Technická dokumentace</h2>
-     <div class="panel">
-      <p><strong>Originální návod – verze 1.01</strong></p>
-      <p>Dokument je uložen na Google Drive.</p>
-
-      <div style="width:100%;height:clamp(420px,75vh,850px);
-                  background:#edf1f5;border:1px solid #d6dfe5;
-                  border-radius:8px;overflow:hidden">
-       <iframe
-        src="${pdfPreview}"
-        title="TDM-Q.EXT1 – návod"
-        style="width:100%;height:100%;border:0"
-        loading="lazy">
-       </iframe>
-      </div>
-
-      <p style="margin-top:16px">
-       <a class="action"
-          style="display:inline-block;text-decoration:none;margin:0 8px 8px 0"
-          href="${pdfView}"
-          target="_blank"
-          rel="noopener noreferrer">
-        Otevřít manuál ↗
-       </a>
-
-       <a class="action"
-          style="display:inline-block;text-decoration:none"
-          href="${pdfDownload}"
-          target="_blank"
-          rel="noopener noreferrer">
-        Stáhnout PDF ↓
-       </a>
-      </p>
-     </div>
-
-     <h2>Technický přehled</h2>
-
-     <details open>
-      <summary>Základní informace</summary>
-      <p><strong>Označení:</strong> TDM-Q.EXT1</p>
-      <p><strong>Dokumentace:</strong> Verze 1.01</p>
-      <p><strong>Napájení:</strong> 6–35 V DC</p>
-      <p><strong>Komunikační rozhraní:</strong> CAN, RS232, 1-Wire</p>
-     </details>
-
-     <details>
-      <summary>Konektory</summary>
-      <p>K4, K5, K6, K7, K8.</p>
-      <p>Přesné přiřazení pinů a elektrické parametry
-         ověř podle originálního manuálu.</p>
-     </details>
-
-     <details>
-      <summary>Montážní poznámky</summary>
-      <p>Schválený montážní postup zatím není vložen.</p>
-     </details>
-    `;
-    return;
-   }
-
-  const selected=storeSections.find(s=>s[2]===section);
-
-  if(selected){
-   main.innerHTML=
-    back(base,'GX Store')+
-    '<section class="hero"><small>Technická dokumentace GX</small>'+
-    '<h1>'+selected[0]+'</h1></section>'+
-    '<div class="panel"><p>Pro tuto sekci zatím nejsou vložené podklady.</p></div>';
-   return;
-  }
-
-  location.hash=base;
-  return;
- }
-
- if(section){
-  location.hash='#g/'+route[1]+'/'+j;
-  return;
- }
-
- main.innerHTML=
-  back('#g/'+route[1],g.name)+
-  '<section class="hero"><small>Technická dokumentace GX</small>'+
-  '<h1>'+g.modules[j]+'</h1></section>'+
-  '<h2>Podklady k montáži</h2>'+
-  ['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce']
-   .map(t=>'<details><summary>'+t+
-    '</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>')
-   .join('');
-}
-window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
-const chat=document.querySelector('#chat'),query=document.querySelector('#query'),log=document.querySelector('#log');
-function openChat() { chat.showModal(); query.focus(); }
-document.querySelector('#ask').onclick = openChat;
-document.querySelector('#mobileAsk').onclick = openChat;
-document.querySelector('#closeChat').onclick=()=>chat.close();
-document.querySelector('#question').onsubmit=e=>{
- e.preventDefault();const value=query.value.trim();if(!value)return;
- log.insertAdjacentHTML('beforeend','<p class="user">'+escapeText(value)+'</p><p>Pro tento dotaz zatím nemáme schválenou odpověď.</p>');
- query.value='';log.scrollTop=log.scrollHeight;query.focus();
-};
-</script></html>
+'use strict';
+const splash=document.getElementById('splash');
+function dismissSplash(){splash.classList.add('done')}
+window.addEventListener('pageshow',()=>{splash.classList.remove('done');setTimeout(dismissSplash,2250)});
+setTimeout(dismissSplash,2250);
+/* Integrace: backend musí ověřit identitu a roli na serveru. Zatím jde o bezpečně read-only prototyp. */
+const API_URL=''; // Po nasazení doplníme URL zabezpečené API vrstvy.
+const categories=[
+ {id:'VZV',name:'VZV',desc:'Vysokozdvižné vozíky',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M6 37h32v8H6z M11 37V15h21v22 M18 15V8h14v7 M22 15v22 M35 9v29 M43 8v34 M43 42h14 M57 42V9"/><circle cx="15" cy="45" r="4"/><circle cx="33" cy="45" r="4"/><path d="M5 29h8 M20 23h10"/></svg>'},
+ {id:'TRUCK',name:'TRUCK',desc:'Nákladní vozidla',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M4 15h34v27H4z M38 24h12l10 11v7H38z M43 28h6l6 7H43z M5 42h53"/><circle cx="17" cy="43" r="5"/><circle cx="49" cy="43" r="5"/></svg>'},
+ {id:'BUILD',name:'BUILD',desc:'Pracovní stroje',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M6 41h36v8H6z M12 41V27h18l9 14 M17 27v-8h13l5 8 M30 19l10-10 10 8-8 14 M50 17l10 10-6 9-10-5"/><circle cx="15" cy="45" r="2"/><circle cx="33" cy="45" r="2"/><path d="M41 41h9"/></svg>'},
+ {id:'ACTIVESAFETY',name:'ACTIVESAFETY',desc:'Bezpečnostní systémy',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 4 53 12v14c0 14-9 21-21 25C20 47 11 40 11 26V12z"/><path d="m21 27 8 8 15-17"/></svg>'}
+];
+let records=[];let currentUser=null;let loadError='';
+const app=document.getElementById('app');const adminButton=document.getElementById('adminButton');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s??'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+const date=s=>{if(!s)return '—';const d=new Date(s);return Number.isNaN(d.getTime())?'—':d.toLocaleDateString('cs-CZ')};
+const cat=id=>categories.find(x=>x.id===id);
+const sorted=()=>[...records].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+function card(r){return `<button type="button" class="record" data-open="${esc(r.id)}"><strong>${esc(r.title)}</strong><div class="meta">${esc(r.category)} · ${date(r.createdAt)} · ${esc(r.authorName)}</div><div class="excerpt">${esc(String(r.body||'').slice(0,150))}${String(r.body||'').length>150?'…':''}</div>${r.attachments?.length?`<div class="meta">📎 ${r.attachments.length} příloh</div>`:''}</button>`}
+function heading(title,subtitle=''){return `<section class="hero"><h1>${esc(title)}</h1>${subtitle?`<p>${esc(subtitle)}</p>`:''}<input class="search" id="search" type="search" placeholder="Hledat název, text, zařízení…" aria-label="Hledat záznamy"></section>`}
+function bindSearch(source){const input=document.getElementById('search'),target=document.getElementById('results');input?.addEventListener('input',()=>{const q=norm(input.value.trim());const filtered=source.filter(r=>norm([r.title,r.body,r.category,r.authorName,...(r.attachments||[]).map(x=>x.name)].join(' ')).includes(q));target.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Žádné odpovídající záznamy.</div>'})}
+function home(){const all=sorted();app.innerHTML=heading('Technické informace','Záznamy a přílohy pro montážní a servisní techniky')+`<div class="grid">${categories.map(c=>`<a class="tile" href="#category/${c.id}"><span class="ico">${c.icon}</span><strong>${c.name}</strong><span>${c.desc}</span></a>`).join('')}</div><h2 id="listTitle">Nejnovější záznamy</h2><div id="results">${all.length?all.slice(0,10).map(card).join(''):'<div class="empty">Zatím nejsou vložené žádné záznamy.</div>'}</div>`;bindSearch(all);document.getElementById('search').addEventListener('input',e=>{document.getElementById('listTitle').textContent=e.target.value?'Výsledky vyhledávání':'Nejnovější záznamy';if(!e.target.value)document.getElementById('results').innerHTML=all.length?all.slice(0,10).map(card).join(''):'<div class="empty">Zatím nejsou vložené žádné záznamy.</div>'})}
+function category(id){const c=cat(id);if(!c)return home();const all=sorted().filter(r=>r.category===id);app.innerHTML=`<button class="back" data-back="#">← Všechny sekce</button>`+heading(c.name,c.desc)+`<h2>Záznamy</h2><div id="results">${all.length?all.map(card).join(''):'<div class="empty">V této sekci zatím nejsou žádné záznamy.</div>'}</div>`;bindSearch(all)}
+function detail(id){const r=records.find(x=>x.id===id);if(!r)return home();const files=(r.attachments||[]).filter(f=>/^https:\/\//.test(f.url||''));app.innerHTML=`<button class="back" data-back="#category/${esc(r.category)}">← ${esc(r.category)}</button><section class="hero"><span class="badge">${esc(r.category)}</span><h1 style="margin-top:12px">${esc(r.title)}</h1><p>${date(r.createdAt)} · Zapsal(a): ${esc(r.authorName)}</p></section><div class="panel"><h2 style="margin-top:0">Informace</h2><div class="content">${esc(r.body)}</div>${files.length?`<h2>Přílohy</h2><div class="attachments">${files.map(f=>`<a class="attachment" href="${esc(f.url)}" target="_blank" rel="noopener noreferrer">📎 ${esc(f.name)} ↗</a>`).join('')}</div>`:''}</div>`}
+function editor(){if(currentUser?.role!=='admin')return home();app.innerHTML=`<button class="back" data-back="#">← Zpět</button><section class="hero"><h1>Nový technický záznam</h1><p>Datum a autor se doplní automaticky.</p></section><div class="notice">Pro ukládání záznamů a souborů je potřeba připojit zabezpečený backend Google Apps Script. Tento formulář zatím nic neodesílá.</div><form id="entryForm" class="panel"><div class="field"><label for="entryCat">Oblast</label><select id="entryCat">${categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div><div class="field"><label for="entryDate">Datum</label><input id="entryDate" disabled value="${new Date().toLocaleDateString('cs-CZ')}"></div><div class="field"><label for="entryAuthor">Autor</label><input id="entryAuthor" disabled value="${esc(currentUser.name)}"></div><div class="field"><label for="entryTitle">Název záznamu</label><input id="entryTitle" required maxlength="160" placeholder="Například montáž RFID čtečky"></div><div class="field"><label for="entryBody">Text záznamu</label><textarea id="entryBody" required placeholder="Postup, upozornění, technické poznámky…"></textarea></div><div class="field"><label for="entryFiles">Přílohy</label><input id="entryFiles" type="file" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"></div><button class="btn" type="submit" disabled>Uložit záznam (po připojení backendu)</button></form>`}
+function render(){const hash=decodeURIComponent(location.hash.slice(1));if(hash.startsWith('category/'))category(hash.slice(9));else if(hash.startsWith('record/'))detail(hash.slice(7));else if(hash==='new')editor();else home();if(loadError){const p=document.createElement('div');p.className='notice';p.textContent=loadError;app.prepend(p)}}
+document.addEventListener('click',e=>{const rec=e.target.closest('[data-open]');if(rec)location.hash='record/'+encodeURIComponent(rec.dataset.open);const back=e.target.closest('[data-back]');if(back)location.hash=back.dataset.back});adminButton.addEventListener('click',()=>location.hash='new');window.addEventListener('hashchange',render);
+async function init(){if(API_URL){try{const res=await fetch(API_URL,{credentials:'include'});if(!res.ok)throw new Error('HTTP '+res.status);const data=await res.json();records=Array.isArray(data.records)?data.records:[];currentUser=data.user?.role==='admin'?data.user:null}catch(err){loadError='Nepodařilo se načíst záznamy ze serveru. '+err.message}}adminButton.classList.toggle('hide',currentUser?.role!=='admin');document.getElementById('roleLabel').textContent=currentUser?.role==='admin'?'Administrátor':'Technik';render()}
+init();
+</script>
+</body></html>
