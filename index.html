@@ -104,10 +104,93 @@ function render(){
  const search=document.querySelector('#search');search.oninput=()=>results(search.value);results('');
  }else if(j===undefined){
  main.innerHTML='<a class="back" href="#">← Příručka</a><section class="hero"><small>Typ montáže</small><h1>'+g.name+'</h1></section><h2>Moduly a systémy</h2><div class="grid">'+g.modules.map((m,k)=>tile(g,route[1],k)).join('')+'</div>';
+ 
+}else{
+ const isActiveSafety = route[1] === '0' && j === '0';
+
+ if(isActiveSafety){
+  const pdfId = '1yzHfHKowxfq0ZTmCdIjTr3Zo7UHJGdKh';
+  const pdfPreview = 'https://drive.google.com/file/d/' + pdfId + '/preview';
+  const pdfOpen = 'https://drive.google.com/file/d/' + pdfId + '/view';
+
+  main.innerHTML = `
+    <a class="back" href="#g/0">← Vysokozdvižné vozíky</a>
+
+    <section class="hero">
+      <small>GX ActiveSafety · Dokumentace</small>
+      <h1>Jungheinrich EFG 2xx</h1>
+      <p>Elektrické schéma zapojení systému GX ActiveSafety</p>
+    </section>
+
+    <h2>Schéma zapojení</h2>
+
+    <div class="panel">
+      <p><strong>Originální výkres – PDF</strong></p>
+      <p>Schéma je načítáno přímo z Google Drive.</p>
+
+      <div style="width:100%;height:clamp(420px,75vh,850px);background:#edf1f5;border:1px solid #d6dfe5;border-radius:8px;overflow:hidden">
+        <iframe
+          src="${pdfPreview}"
+          title="Schéma zapojení Jungheinrich EFG 2xx"
+          style="width:100%;height:100%;border:0"
+          loading="lazy"
+          allow="fullscreen">
+        </iframe>
+      </div>
+
+      <p style="margin-top:16px">
+        <a class="action"
+           style="display:inline-block;text-decoration:none"
+           href="${pdfOpen}"
+           target="_blank"
+           rel="noopener noreferrer">
+          Otevřít celé schéma ↗
+        </a>
+      </p>
+    </div>
+
+    <h2>Technický přehled</h2>
+
+    <details open>
+      <summary>Základní informace</summary>
+      <p><strong>Vozík:</strong> Jungheinrich EFG 2xx</p>
+      <p><strong>Systém:</strong> GX ActiveSafety</p>
+      <p><strong>Napájení vozíku:</strong> 48 V DC</p>
+      <p><strong>Typ dokumentu:</strong> Elektrické schéma</p>
+    </details>
+
+    <details>
+      <summary>Použité komponenty</summary>
+      <ul>
+        <li>Jednotka TDM-Q</li>
+        <li>Čtečka TM-UWB.2</li>
+        <li>Čtečka TM-RFID-MIFARE</li>
+        <li>Modul TM-GOCAN-RD2</li>
+        <li>DC/DC měnič</li>
+        <li>Relé SPDT</li>
+        <li>GSM a GPS anténa</li>
+      </ul>
+      <p>Konkrétní zapojení a svorky ověř v originálním výkresu.</p>
+    </details>
+
+    <details>
+      <summary>Montážní poznámky</summary>
+      <p>Podrobný montážní postup zatím není vložen.</p>
+    </details>
+  `;
  }else{
- main.innerHTML='<a class="back" href="#g/'+route[1]+'">← '+g.name+'</a><section class="hero"><small>Ukázková karta</small><h1>'+g.modules[j]+'</h1></section><h2>Podklady k montáži</h2>'+['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce'].map(t=>'<details><summary>'+t+'</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>').join('');
+  main.innerHTML =
+    '<a class="back" href="#g/'+route[1]+'">← '+g.name+'</a>'+
+    '<section class="hero"><small>Ukázková karta</small><h1>'+
+    g.modules[j]+'</h1></section>'+
+    '<h2>Podklady k montáži</h2>'+
+    ['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce']
+      .map(t=>'<details><summary>'+t+
+      '</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>')
+      .join('');
  }
 }
+
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
 const chat=document.querySelector('#chat'),query=document.querySelector('#query'),log=document.querySelector('#log');
 function openChat() { chat.showModal(); query.focus(); }
