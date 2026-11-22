@@ -280,7 +280,6 @@ function render(){
    .map(t=>'<details><summary>'+t+
     '</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>')
    .join('');
- }
 }
 window.addEventListener('hashchange',()=>{render();window.scrollTo(0,0)});render();
 const chat=document.querySelector('#chat'),query=document.querySelector('#query'),log=document.querySelector('#log');
