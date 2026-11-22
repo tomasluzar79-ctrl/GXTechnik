@@ -97,97 +97,189 @@ function results(value){
  document.querySelector('#cards').innerHTML=cards.join('')||'<p>Žádná shoda. Zkus název modulu nebo stroje.</p>';
 }
 function render(){
- const route=location.hash.match(/^#g\/(\d+)(?:\/(\d+))?$/);
- const g=route&&groups[route[1]],j=route?.[2];
+ const route=location.hash.match(/^#g\/(\d+)(?:\/(\d+))?(?:\/([a-z0-9-]+))?$/);
+ const g=route&&groups[route[1]];
+ const j=route?.[2];
+ const section=route?.[3];
+ const isGXStore=route?.[1]==='0'&&j==='1';
+
+ const back=(href,label)=>
+   '<a class="back" href="'+href+'">← '+label+'</a>';
+
+ const sectionTile=(title,subtitle,href)=>
+   '<a class="tile" href="'+href+'">'+
+   '<span class="icon" aria-hidden="true">▣</span>'+
+   '<span><strong>'+title+'</strong><em>'+subtitle+'</em></span>'+
+   '<b class="arrow" aria-hidden="true">→</b></a>';
+
+ const storeSections=[
+  ['Obecná zapojení VZV','Schémata podle značky a typu vozíku','wiring'],
+  ['Moduly a zařízení','Technické parametry a návody k modulům','modules'],
+  ['Montážní postupy','Postupy instalace a kontrola funkce','installation'],
+  ['Diagnostika a řešení problémů','Závady, kontroly a doporučené postupy','diagnostics']
+ ];
+
  if(!g||(j!==undefined&&!g.modules[j])){
- main.innerHTML='<section class="hero"><small>GX Solutions Bohemia</small><h1>Montážní příručka</h1><input id="search" type="search" aria-label="Hledat v příručce" placeholder="Hledat modul, stroj nebo označení…"></section><h2 id="heading"></h2><div id="cards" class="grid"></div>';
- const search=document.querySelector('#search');search.oninput=()=>results(search.value);results('');
- }else if(j===undefined){
- main.innerHTML='<a class="back" href="#">← Příručka</a><section class="hero"><small>Typ montáže</small><h1>'+g.name+'</h1></section><h2>Moduly a systémy</h2><div class="grid">'+g.modules.map((m,k)=>tile(g,route[1],k)).join('')+'</div>';
- 
-}else{
- const isActiveSafety = route[1] === '0' && j === '1';
+  main.innerHTML=
+   '<section class="hero"><small>GX Solutions Bohemia</small>'+
+   '<h1>Montážní příručka</h1>'+
+   '<input id="search" type="search" aria-label="Hledat v příručce" '+
+   'placeholder="Hledat modul, stroj nebo označení…"></section>'+
+   '<h2 id="heading"></h2><div id="cards" class="grid"></div>';
 
- if(isActiveSafety){
-  const pdfId = '1yzHfHKowxfq0ZTmCdIjTr3Zo7UHJGdKh';
-  const pdfPreview = 'https://drive.google.com/file/d/' + pdfId + '/preview';
-  const pdfOpen = 'https://drive.google.com/file/d/' + pdfId + '/view';
+  const search=document.querySelector('#search');
+  search.oninput=()=>results(search.value);
+  results('');
+  return;
+ }
 
-  main.innerHTML = `
-    <a class="back" href="#g/0">← Vysokozdvižné vozíky</a>
+ if(j===undefined){
+  main.innerHTML=
+   back('#','Příručka')+
+   '<section class="hero"><small>Typ montáže</small>'+
+   '<h1>'+g.name+'</h1></section>'+
+   '<h2>Moduly a systémy</h2>'+
+   '<div class="grid">'+
+   g.modules.map((m,k)=>tile(g,route[1],k)).join('')+
+   '</div>';
+  return;
+ }
+
+ if(isGXStore){
+  const base='#g/0/1';
+
+  if(!section){
+   main.innerHTML=
+    back('#g/0','Vysokozdvižné vozíky')+
+    '<section class="hero"><small>Technická dokumentace GX</small>'+
+    '<h1>GX Store</h1>'+
+    '<p>Schémata zapojení, moduly, montážní postupy a diagnostika.</p>'+
+    '</section>'+
+    '<h2>Dokumentace</h2>'+
+    '<div class="grid">'+
+    storeSections.map(s=>sectionTile(s[0],s[1],base+'/'+s[2])).join('')+
+    '</div>';
+   return;
+  }
+
+  if(section==='wiring'){
+   main.innerHTML=
+    back(base,'GX Store')+
+    '<section class="hero"><small>Technická dokumentace GX</small>'+
+    '<h1>Obecná zapojení VZV</h1></section>'+
+    '<h2>Schémata podle typu vozíku</h2>'+
+    '<div class="grid">'+
+    sectionTile(
+      'Jungheinrich EFG 2xx',
+      'Elektrické schéma zapojení · 48 V DC',
+      base+'/efg2xx'
+    )+
+    '</div>';
+   return;
+  }
+
+  if(section==='efg2xx'){
+   const pdfId='1yzHfHKowxfq0ZTmCdIjTr3Zo7UHJGdKh';
+   const pdfPreview='https://drive.google.com/file/d/'+pdfId+'/preview';
+   const pdfOpen='https://drive.google.com/file/d/'+pdfId+'/view';
+
+   main.innerHTML=`
+    ${back(base+'/wiring','Obecná zapojení VZV')}
 
     <section class="hero">
-      <small>GX ActiveSafety · Dokumentace</small>
-      <h1>Jungheinrich EFG 2xx</h1>
-      <p>Elektrické schéma zapojení systému GX ActiveSafety</p>
+     <small>Technická dokumentace GX · Schéma zapojení</small>
+     <h1>Jungheinrich EFG 2xx</h1>
+     <p>Elektrické schéma instalace systému GX.</p>
     </section>
 
     <h2>Schéma zapojení</h2>
-
     <div class="panel">
-      <p><strong>Originální výkres – PDF</strong></p>
-      <p>Schéma je načítáno přímo z Google Drive.</p>
+     <p><strong>Originální výkres – PDF</strong></p>
+     <p>Dokument je načítán z Google Drive.</p>
 
-      <div style="width:100%;height:clamp(420px,75vh,850px);background:#edf1f5;border:1px solid #d6dfe5;border-radius:8px;overflow:hidden">
-        <iframe
-          src="${pdfPreview}"
-          title="Schéma zapojení Jungheinrich EFG 2xx"
-          style="width:100%;height:100%;border:0"
-          loading="lazy"
-          allow="fullscreen">
-        </iframe>
-      </div>
+     <div style="width:100%;height:clamp(420px,75vh,850px);
+                 background:#edf1f5;border:1px solid #d6dfe5;
+                 border-radius:8px;overflow:hidden">
+      <iframe
+       src="${pdfPreview}"
+       title="Schéma zapojení Jungheinrich EFG 2xx"
+       style="width:100%;height:100%;border:0"
+       loading="lazy"
+       allow="fullscreen">
+      </iframe>
+     </div>
 
-      <p style="margin-top:16px">
-        <a class="action"
-           style="display:inline-block;text-decoration:none"
-           href="${pdfOpen}"
-           target="_blank"
-           rel="noopener noreferrer">
-          Otevřít celé schéma ↗
-        </a>
-      </p>
+     <p style="margin-top:16px">
+      <a class="action"
+         style="display:inline-block;text-decoration:none"
+         href="${pdfOpen}"
+         target="_blank"
+         rel="noopener noreferrer">
+       Otevřít celé schéma ↗
+      </a>
+     </p>
     </div>
 
     <h2>Technický přehled</h2>
 
     <details open>
-      <summary>Základní informace</summary>
-      <p><strong>Vozík:</strong> Jungheinrich EFG 2xx</p>
-      <p><strong>Systém:</strong> GX ActiveSafety</p>
-      <p><strong>Napájení vozíku:</strong> 48 V DC</p>
-      <p><strong>Typ dokumentu:</strong> Elektrické schéma</p>
+     <summary>Základní informace</summary>
+     <p><strong>Vozík:</strong> Jungheinrich EFG 2xx</p>
+     <p><strong>Napájení vozíku:</strong> 48 V DC</p>
+     <p><strong>Typ dokumentu:</strong> Elektrické schéma</p>
     </details>
 
     <details>
-      <summary>Použité komponenty</summary>
-      <ul>
-        <li>Jednotka TDM-Q</li>
-        <li>Čtečka TM-UWB.2</li>
-        <li>Čtečka TM-RFID-MIFARE</li>
-        <li>Modul TM-GOCAN-RD2</li>
-        <li>DC/DC měnič</li>
-        <li>Relé SPDT</li>
-        <li>GSM a GPS anténa</li>
-      </ul>
-      <p>Konkrétní zapojení a svorky ověř v originálním výkresu.</p>
+     <summary>Použité komponenty</summary>
+     <ul>
+      <li>Jednotka TDM-Q</li>
+      <li>Čtečka TM-UWB.2</li>
+      <li>Čtečka TM-RFID-MIFARE</li>
+      <li>Modul TM-GOCAN-RD2</li>
+      <li>DC/DC měnič</li>
+      <li>Relé SPDT</li>
+      <li>GSM a GPS anténa</li>
+     </ul>
+     <p>Konkrétní svorky a propojení ověř v originálním výkresu.</p>
     </details>
 
     <details>
-      <summary>Montážní poznámky</summary>
-      <p>Podrobný montážní postup zatím není vložen.</p>
+     <summary>Montážní poznámky</summary>
+     <p>Podrobný montážní postup zatím není vložen.</p>
     </details>
-  `;
- }else{
-  main.innerHTML =
-    '<a class="back" href="#g/'+route[1]+'">← '+g.name+'</a>'+
-    '<section class="hero"><small>Ukázková karta</small><h1>'+
-    g.modules[j]+'</h1></section>'+
-    '<h2>Podklady k montáži</h2>'+
-    ['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce']
-      .map(t=>'<details><summary>'+t+
-      '</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>')
-      .join('');
+   `;
+   return;
+  }
+
+  const selected=storeSections.find(s=>s[2]===section);
+
+  if(selected){
+   main.innerHTML=
+    back(base,'GX Store')+
+    '<section class="hero"><small>Technická dokumentace GX</small>'+
+    '<h1>'+selected[0]+'</h1></section>'+
+    '<div class="panel"><p>Pro tuto sekci zatím nejsou vložené podklady.</p></div>';
+   return;
+  }
+
+  location.hash=base;
+  return;
+ }
+
+ if(section){
+  location.hash='#g/'+route[1]+'/'+j;
+  return;
+ }
+
+ main.innerHTML=
+  back('#g/'+route[1],g.name)+
+  '<section class="hero"><small>Technická dokumentace GX</small>'+
+  '<h1>'+g.modules[j]+'</h1></section>'+
+  '<h2>Podklady k montáži</h2>'+
+  ['Varianty zapojení','Schémata a konektory','Montáž a kontrola funkce']
+   .map(t=>'<details><summary>'+t+
+    '</summary><p>Pro tuto kartu zatím není vložen schválený podklad.</p></details>')
+   .join('');
  }
 }
 }
