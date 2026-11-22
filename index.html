@@ -22,7 +22,25 @@
 .tile .ico{display:flex;align-items:center;justify-content:flex-start;height:52px;margin-bottom:13px;color:var(--blue)}
 .tile .ico svg{width:58px;height:50px;stroke:currentColor;fill:none;stroke-width:2.8;stroke-linecap:round;stroke-linejoin:round}
 @media(max-width:740px){.brand-logo{width:143px}.brand-caption{font-size:11px}.tile .ico svg{width:53px}}
-@media(prefers-reduced-motion:reduce){.splash-logo{animation:none}.splash{transition:none}}
+/* iOS Safari: jednoduchá 2D rotace bez 3D perspektivy a filtru na animovaném prvku. */
+.splash-orbit{ -webkit-perspective:none;perspective:none; }
+.splash-logo{ -webkit-animation:none!important;animation:none!important; -webkit-transform-origin:center center;transform-origin:center center; -webkit-backface-visibility:visible;backface-visibility:visible; }
+.splash.is-playing .splash-logo{
+  -webkit-animation:gxIOSRotate 2s ease-in-out both!important;
+  animation:gxIOSRotate 2s ease-in-out both!important;
+}
+@-webkit-keyframes gxIOSRotate{
+  0%{-webkit-transform:rotate(0deg) scale(.78);opacity:.2}
+  15%{opacity:1}
+  80%{-webkit-transform:rotate(660deg) scale(1.04)}
+  100%{-webkit-transform:rotate(720deg) scale(1);opacity:1}
+}
+@keyframes gxIOSRotate{
+  0%{transform:rotate(0deg) scale(.78);opacity:.2}
+  15%{opacity:1}
+  80%{transform:rotate(660deg) scale(1.04)}
+  100%{transform:rotate(720deg) scale(1);opacity:1}
+}
 </style>
 </head>
 <body>
@@ -33,8 +51,23 @@
 <script>
 'use strict';
 const splash=document.getElementById('splash');
-function dismissSplash(){splash.classList.add('done')}
-window.addEventListener('pageshow',()=>{splash.classList.remove('done');setTimeout(dismissSplash,2250)});
+let splashTimer;
+function dismissSplash(){
+  splash.classList.add('done');
+  splash.classList.remove('is-playing');
+}
+function playSplash(){
+  clearTimeout(splashTimer);
+  splash.classList.remove('done','is-playing');
+  void splash.offsetWidth;
+  splash.classList.add('is-playing');
+  splashTimer=setTimeout(dismissSplash,2500);
+}
+playSplash();
+window.addEventListener('pageshow',event=>{if(event.persisted)playSplash()});
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible' && splash.classList.contains('done')) playSplash();
+});
 setTimeout(dismissSplash,2250);
 /* Integrace: backend musí ověřit identitu a roli na serveru. Zatím jde o bezpečně read-only prototyp. */
 const API_URL=''; // Po nasazení doplníme URL zabezpečené API vrstvy.
