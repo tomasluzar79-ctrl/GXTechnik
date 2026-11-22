@@ -106,7 +106,7 @@ function render(){
  main.innerHTML='<a class="back" href="#">← Příručka</a><section class="hero"><small>Typ montáže</small><h1>'+g.name+'</h1></section><h2>Moduly a systémy</h2><div class="grid">'+g.modules.map((m,k)=>tile(g,route[1],k)).join('')+'</div>';
  
 }else{
- const isActiveSafety = route[1] === '0' && j === '0';
+ const isActiveSafety = route[1] === '0' && j === '1';
 
  if(isActiveSafety){
   const pdfId = '1yzHfHKowxfq0ZTmCdIjTr3Zo7UHJGdKh';
