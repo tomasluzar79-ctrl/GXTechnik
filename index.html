@@ -110,8 +110,14 @@ function results(value){
    subtitle:'GX Store · Schéma zapojení 48 V',
    href:'#g/0/1/efg2xx',
    keywords:'jungheinrich efg 2xx efg2xx 48v 48 v schema zapojeni pdf maier tdm-q uwb rfid gocan'
-  },
+  }, 
   {
+   title:'TDM-Q.EXT1',
+   subtitle:'GX Store · Řídicí jednotka · Manuál PDF',
+   href:'#g/0/1/tdm-q-ext1',
+   keywords:'tdm q ext1 tdm-q tdmq ridici jednotka modul konektory can rs232 1-wire manual navod'
+  },
+
    title:'Moduly a zařízení',
    subtitle:'GX Store · Technická dokumentace',
    href:'#g/0/1/modules',
@@ -326,6 +332,98 @@ function render(){
    `;
    return;
   }
+
+   if(section==='modules'){
+    main.innerHTML=
+     back(base,'GX Store')+
+     '<section class="hero"><small>Technická dokumentace GX</small>'+
+     '<h1>Moduly a zařízení</h1>'+
+     '<p>Technické informace a návody k jednotlivým modulům.</p></section>'+
+     '<h2>Dostupné moduly</h2>'+
+     '<div class="grid">'+
+     sectionTile(
+       'TDM-Q.EXT1',
+       'Řídicí jednotka · Návod 1.01',
+       base+'/tdm-q-ext1'
+     )+
+     '</div>';
+    return;
+   }
+
+   if(section==='tdm-q-ext1'){
+    const pdfId='1YRZUKmmRD6I9AwIT6lT_Ua7u5UC8X_EF';
+    const pdfView='https://drive.google.com/file/d/'+pdfId+'/view';
+    const pdfPreview='https://drive.google.com/file/d/'+pdfId+'/preview';
+    const pdfDownload='https://drive.google.com/uc?export=download&id='+pdfId;
+
+    main.innerHTML=`
+     ${back(base+'/modules','Moduly a zařízení')}
+
+     <section class="hero">
+      <small>GX Store · Moduly a zařízení</small>
+      <h1>TDM-Q.EXT1</h1>
+      <p>Řídicí jednotka systému TDM</p>
+     </section>
+
+     <h2>Technická dokumentace</h2>
+     <div class="panel">
+      <p><strong>Originální návod – verze 1.01</strong></p>
+      <p>Dokument je uložen na Google Drive.</p>
+
+      <div style="width:100%;height:clamp(420px,75vh,850px);
+                  background:#edf1f5;border:1px solid #d6dfe5;
+                  border-radius:8px;overflow:hidden">
+       <iframe
+        src="${pdfPreview}"
+        title="TDM-Q.EXT1 – návod"
+        style="width:100%;height:100%;border:0"
+        loading="lazy">
+       </iframe>
+      </div>
+
+      <p style="margin-top:16px">
+       <a class="action"
+          style="display:inline-block;text-decoration:none;margin:0 8px 8px 0"
+          href="${pdfView}"
+          target="_blank"
+          rel="noopener noreferrer">
+        Otevřít manuál ↗
+       </a>
+
+       <a class="action"
+          style="display:inline-block;text-decoration:none"
+          href="${pdfDownload}"
+          target="_blank"
+          rel="noopener noreferrer">
+        Stáhnout PDF ↓
+       </a>
+      </p>
+     </div>
+
+     <h2>Technický přehled</h2>
+
+     <details open>
+      <summary>Základní informace</summary>
+      <p><strong>Označení:</strong> TDM-Q.EXT1</p>
+      <p><strong>Dokumentace:</strong> Verze 1.01</p>
+      <p><strong>Napájení:</strong> 6–35 V DC</p>
+      <p><strong>Komunikační rozhraní:</strong> CAN, RS232, 1-Wire</p>
+     </details>
+
+     <details>
+      <summary>Konektory</summary>
+      <p>K4, K5, K6, K7, K8.</p>
+      <p>Přesné přiřazení pinů a elektrické parametry
+         ověř podle originálního manuálu.</p>
+     </details>
+
+     <details>
+      <summary>Montážní poznámky</summary>
+      <p>Schválený montážní postup zatím není vložen.</p>
+     </details>
+    `;
+    return;
+   }
 
   const selected=storeSections.find(s=>s[2]===section);
 
