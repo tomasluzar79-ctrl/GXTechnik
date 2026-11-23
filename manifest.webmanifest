@@ -1,0 +1,18 @@
+{
+  "name": "GX Technik",
+  "short_name": "GX Technik",
+  "description": "Technické informace pro montážní a servisní techniky",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#094889",
+  "icons": [
+    {
+      "src": "./IKONA%20GX%20TECHNIK.png",
+      "sizes": "1000x928",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
