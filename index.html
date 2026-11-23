@@ -57,6 +57,11 @@
 /* Nadpis TECHNIK vedle firemního loga */
 .brand-caption{font-size:36px;line-height:1;font-weight:900;letter-spacing:-1.2px;color:#034795;margin-left:5px}
 @media(max-width:740px){.brand-caption{font-size:30px;letter-spacing:-1px}}
+/* Jednotný moderní styl ikon sekcí */
+.tile .ico{width:72px;height:72px;display:flex;align-items:center;justify-content:center;margin-bottom:15px;border-radius:18px;background:#eaf2fb;color:#094889;transition:background .2s ease,transform .2s ease}
+.tile .ico svg{width:55px;height:55px;stroke:currentColor;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.tile:hover .ico,.tile:focus-visible .ico{background:#dceafa;transform:translateY(-2px)}
+@media(max-width:740px){.tile .ico{width:62px;height:62px;border-radius:15px}.tile .ico svg{width:48px;height:48px}}
 </style>
 </head>
 <body>
@@ -84,10 +89,10 @@ playSplash();
 /* Integrace: backend musí ověřit identitu a roli na serveru. Zatím jde o bezpečně read-only prototyp. */
 const API_URL='https://script.google.com/macros/s/AKfycbypKqwtRwdssP2Z1leZ0uZjfnyZhB1f5ccAxgnJVWijdjCE0TeAwiLQoM6wMIvP9yJ5Zg/exec'; // Veřejné API pouze pro čtení.
 const categories=[
- {id:'VZV',name:'VZV',desc:'Vysokozdvižné vozíky',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M6 37h32v8H6z M11 37V15h21v22 M18 15V8h14v7 M22 15v22 M35 9v29 M43 8v34 M43 42h14 M57 42V9"/><circle cx="15" cy="45" r="4"/><circle cx="33" cy="45" r="4"/><path d="M5 29h8 M20 23h10"/></svg>'},
- {id:'TRUCK',name:'TRUCK',desc:'Nákladní vozidla',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M4 15h34v27H4z M38 24h12l10 11v7H38z M43 28h6l6 7H43z M5 42h53"/><circle cx="17" cy="43" r="5"/><circle cx="49" cy="43" r="5"/></svg>'},
- {id:'BUILD',name:'BUILD',desc:'Pracovní stroje',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M6 41h36v8H6z M12 41V27h18l9 14 M17 27v-8h13l5 8 M30 19l10-10 10 8-8 14 M50 17l10 10-6 9-10-5"/><circle cx="15" cy="45" r="2"/><circle cx="33" cy="45" r="2"/><path d="M41 41h9"/></svg>'},
- {id:'ACTIVESAFETY',name:'ACTIVESAFETY',desc:'Bezpečnostní systémy',icon:'<svg viewBox="0 0 64 52" aria-hidden="true"><path d="M32 4 53 12v14c0 14-9 21-21 25C20 47 11 40 11 26V12z"/><path d="m21 27 8 8 15-17"/></svg>'}
+ {id:'VZV',name:'VZV',desc:'Vysokozdvižné vozíky',icon:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M11 46V23h22v23 M16 23v-9h13v9 M33 17v29 M43 11v39 M43 49h15 M58 49V13 M11 39h22 M19 31h10"/><path d="M8 46h31"/><circle cx="17" cy="50" r="5"/><circle cx="35" cy="50" r="5"/><path d="M13 13h19"/></svg>'},
+ {id:'TRUCK',name:'TRUCK',desc:'Nákladní vozidla',icon:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M5 20h35v27H5z M40 29h11l8 10v8H40z M44 33h6l5 6H44z M5 47h7 M24 47h22 M56 47h3"/><circle cx="18" cy="48" r="6"/><circle cx="51" cy="48" r="6"/><path d="M10 26h24 M10 32h18"/></svg>'},
+ {id:'BUILD',name:'BUILD',desc:'Pracovní stroje',icon:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M7 45h33l7-10-8-8H22l-8 8v10 M22 27v-9h15l8 9 M37 18l8-9 11 9-7 12 M49 30l7 5-6 8 M6 45h43"/><path d="M10 51h34 M14 45v6 M40 45v6"/><circle cx="18" cy="48" r="3"/><circle cx="36" cy="48" r="3"/></svg>'},
+ {id:'ACTIVESAFETY',name:'ACTIVESAFETY',desc:'Bezpečnostní systémy',icon:'<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M32 7 53 15v15c0 14-9 23-21 28C20 53 11 44 11 30V15z"/><path d="m21 32 8 8 15-17"/><path d="M32 12 48 18v12" opacity=".35"/></svg>'}
 ];
 let records=[];let currentUser=null;let loadError='';
 const app=document.getElementById('app');const adminButton=document.getElementById('adminButton');
