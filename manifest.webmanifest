@@ -1,7 +1,7 @@
 {
-  "name": "GX Technik",
-  "short_name": "GX Technik",
-  "description": "Technické informace pro montážní a servisní techniky",
+  "name": "GX ActiveSafety",
+  "short_name": "GX ActiveSafety",
+  "description": "Technické informace pro Active Safety",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
