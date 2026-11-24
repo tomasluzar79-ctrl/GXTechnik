@@ -167,12 +167,39 @@ async function init(){
  authenticated=true;document.getElementById('appHeader').classList.remove('hide');logout.classList.remove('hide');render();
  }catch(err){if(g===generation)loginScreen('Nepodařilo se připojit: '+err.message);}
 }
+let closePreview=()=>{};
+async function showAttachment(data){
+ closePreview();
+ const bytes=Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0));
+ const name=data.name||'priloha',ext=name.split('.').pop().toLowerCase();
+ const types={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif',bmp:'image/bmp'};
+ const mime=types[ext]||data.mimeType||'application/octet-stream';
+ const url=URL.createObjectURL(new Blob([bytes],{type:mime}));
+ const download=()=>{const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();};
+ if(mime!=='application/pdf'&&!mime.startsWith('image/')){download();setTimeout(()=>URL.revokeObjectURL(url),60000);return;}
+ const overlay=document.createElement('div');overlay.style.cssText='position:fixed;inset:0;z-index:99999;background:#fff;color:#222;display:flex;flex-direction:column';
+ const bar=document.createElement('div');bar.style.cssText='display:flex;align-items:center;gap:8px;padding:12px;flex-wrap:wrap;background:#eee;padding-top:max(12px,env(safe-area-inset-top))';
+ const title=document.createElement('strong');title.textContent=name;title.style.cssText='flex:1;overflow-wrap:anywhere;min-width:100px';bar.append(title);
+ const button=(label,fn)=>{const b=document.createElement('button');b.textContent=label;b.style.cssText='padding:10px;color:#222;background:#fff;border:1px solid #aaa;border-radius:6px';b.onclick=fn;bar.append(b);return b;};
+ const body=document.createElement('div');body.style.cssText='flex:1;overflow:auto;text-align:center;background:#ddd;padding:8px';
+ let closed=false,doc=null;closePreview=()=>{closed=true;overlay.remove();URL.revokeObjectURL(url);if(doc)doc.destroy();closePreview=()=>{};};
+ button('Uložit',download);button('Zavřít',()=>closePreview());overlay.append(bar,body);document.body.append(overlay);
+ if(mime.startsWith('image/')){const img=document.createElement('img');img.src=url;img.style.cssText='max-width:100%;height:auto';img.alt=name;body.append(img);return;}
+ body.textContent='Načítám PDF…';
+ try{
+ const pdfjs=await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.min.mjs');
+ pdfjs.GlobalWorkerOptions.workerSrc='https://cdn.jsdelivr.net/npm/pdfjs-dist@4.10.38/build/pdf.worker.min.mjs';
+ doc=await pdfjs.getDocument({data:bytes,isEvalSupported:false}).promise;if(closed){doc.destroy();return;}
+ let page=1,zoom=1,busy=false;const label=document.createElement('span');bar.append(label);
+ const draw=async()=>{if(busy||closed)return;busy=true;try{const p=await doc.getPage(page);if(closed)return;const base=p.getViewport({scale:1});const scale=Math.min(2,Math.max(.2,(body.clientWidth-20)/base.width))*zoom;const ratio=Math.min(devicePixelRatio||1,2);const viewport=p.getViewport({scale:scale*ratio});const canvas=document.createElement('canvas');canvas.width=Math.ceil(viewport.width);canvas.height=Math.ceil(viewport.height);canvas.style.width=(viewport.width/ratio)+'px';canvas.style.height=(viewport.height/ratio)+'px';await p.render({canvasContext:canvas.getContext('2d'),viewport}).promise;if(!closed){body.replaceChildren(canvas);label.textContent=page+' / '+doc.numPages;}}finally{busy=false;}};
+ button('‹',()=>{if(!busy&&page>1){page--;draw();}});button('›',()=>{if(!busy&&page<doc.numPages){page++;draw();}});button('−',()=>{if(!busy){zoom=Math.max(.5,zoom-.25);draw();}});button('+',()=>{if(!busy){zoom=Math.min(3,zoom+.25);draw();}});await draw();
+ }catch(err){if(!closed)body.textContent='Náhled PDF se nepodařilo načíst. Použij tlačítko Uložit.';}
+}
 document.addEventListener('click',async e=>{
  const b=e.target.closest('[data-download]');if(!b||!authenticated)return;
- b.disabled=true;const g=generation;const preview=window.open('','_blank');if(preview){preview.opener=null;preview.document.body.textContent='Načítám přílohu…';}
- try{const data=await api('download',{fileId:b.dataset.download});if(g!==generation){if(preview)preview.close();return;}if(!data.success)throw new Error(data.error||'Stažení selhalo.');
- const bytes=Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0));const name=data.name||'priloha';const ext=name.split('.').pop().toLowerCase();const types={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif'};const mime=types[ext]||data.mimeType||'application/octet-stream';const url=URL.createObjectURL(new Blob([bytes],{type:mime}));if(types[ext]&&preview&&!preview.closed){preview.location.replace(url);}else{if(preview&&!preview.closed)preview.close();const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();}setTimeout(()=>URL.revokeObjectURL(url),600000);
- }catch(err){if(preview&&!preview.closed)preview.close();alert(err.message);}finally{b.disabled=false;}
+ b.disabled=true;const g=generation;
+ try{const data=await api('download',{fileId:b.dataset.download});if(g!==generation)return;if(!data.success)throw new Error(data.error||'Stažení selhalo.');await showAttachment(data);}
+ catch(err){alert(err.message);}finally{b.disabled=false;}
 });
 init();
 </script>
