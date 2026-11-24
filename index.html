@@ -95,11 +95,12 @@
 }
 .brand-caption{font-size:clamp(17px,4vw,30px);letter-spacing:-.7px}.splash-name{font-size:clamp(22px,6vw,29px);letter-spacing:2px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin:auto}.tile{align-items:center;justify-content:center;text-align:center;min-height:145px}.tile .ico{justify-content:center;margin-bottom:8px}.tile .ico svg{width:56px;height:56px}.tile strong{font-size:17px}
+.header-gxas{display:block;width:100px;height:100px;object-fit:contain}.bar{min-height:100px}@media(max-width:740px){.header-gxas{width:86px;height:86px}.bar{min-height:86px}}
 </style>
 </head>
 <body>
 <div id="splash" class="splash" aria-label="Spouštění aplikace GX ActiveSafety"><svg viewBox="0 0 360 210" style="width:min(92vw,520px);display:block;overflow:hidden"><defs><linearGradient id="gxMirror"><stop stop-color="#e7edf2"/><stop offset=".5" stop-color="#9bafc0"/><stop offset="1" stop-color="#d9e2e9"/></linearGradient></defs><g id="gxScene"><path d="M112 21H248" stroke="#c7d1db" stroke-width="3"/><path d="M180 21V36" stroke="#094889" stroke-width="2.5"/><g transform="translate(180 40) scale(.43) translate(-180 -40)"><path d="M135 40H225A45 45 0 0 1 135 40Z" fill="url(#gxMirror)" stroke="#094889" stroke-width="2"/><path d="M145 49Q151 67 170 73" fill="none" stroke="white" stroke-width="5"/><path id="gxLed" d="M135 40H225" stroke="#a9b6c1" stroke-width="7" stroke-linecap="round"/></g><path d="M10 154H350" stroke="#e1e7ee" stroke-width="2"/><g id="gxTruck" transform="translate(-95 0)" fill="#094889" stroke="#094889" stroke-linejoin="round"><path d="M12 142V123H26V98H48L62 142Z" stroke-width="2"/><path d="M31 103H44L54 123H31Z" fill="white" stroke="none"/><g id="gxWheel1"><circle cx="22" cy="145" r="9" stroke="white" stroke-width="2"/><path d="M18 145H26M22 141V149" stroke="white"/></g><g id="gxWheel2"><circle cx="52" cy="145" r="9" stroke="white" stroke-width="2"/><path d="M48 145H56M52 141V149" stroke="white"/></g><path d="M66 96V145H89" stroke-width="5" fill="none" stroke-linecap="round"/></g></g><g id="gxBrand" style="display:none;opacity:0"><image href="GXAS.png" x="100" y="25" width="160" height="160" preserveAspectRatio="xMidYMid meet"/></g></svg></div>
-<header><div class="wrap bar"><a class="brand" href="#" aria-label="GX ActiveSafety úvod"><img class="brand-logo" src="GX_logomark_fullcolor_rgb.png" alt="GX Solutions"><span class="brand-caption">ACTIVESAFETY</span></a><div class="row"><button id="logout" class="btn secondary hide" type="button">Odhlásit</button><span id="roleLabel" class="badge">Technik</span><button id="adminButton" class="btn secondary hide" type="button">+ Nový záznam</button></div></div></header>
+<header id="appHeader" class="hide"><div class="wrap bar"><a class="brand" href="#" aria-label="GX ActiveSafety úvod"><img class="header-gxas" src="GXAS.png" alt="GX ActiveSafety"></a><div class="row"><button id="logout" class="btn secondary hide" type="button">Odhlásit</button><span id="roleLabel" class="badge">Technik</span><button id="adminButton" class="btn secondary hide" type="button">+ Nový záznam</button></div></div></header>
 <main class="wrap" id="app"></main>
 <footer><div class="wrap">GX Solutions Bohemia · Interní technické informace</div></footer>
 <script>
@@ -144,7 +145,7 @@ async function api(action,extra={}){
  return res.json();
 }
 function loginScreen(message=''){
- generation++;authenticated=false;records=[];logout.classList.add('hide');
+ generation++;authenticated=false;records=[];logout.classList.add('hide');document.getElementById('appHeader').classList.add('hide');
  app.innerHTML='<section class="panel" style="max-width:420px;margin:30px auto"><img src="GXAS.png" alt="GX ActiveSafety" style="display:block;width:100px;margin:auto"><h2>Přihlášení technika</h2><form id="loginForm"><div class="field"><label for="password">Přístupové heslo</label><input id="password" type="password" required autocomplete="current-password"></div><button class="btn" type="submit">Přihlásit se</button><p id="loginStatus" role="status"></p></form></section>';
  const status=document.getElementById('loginStatus');status.textContent=message;
  document.getElementById('loginForm').onsubmit=async e=>{
@@ -163,7 +164,7 @@ async function init(){
  if(!data.success){token='';localStorage.removeItem('gx_session');return loginScreen(data.error);}
  if(!Array.isArray(data.records))throw new Error('Neplatná odpověď služby.');
  records=data.records.filter(r=>r&&(r.section==='ACTIVESAFETY'||categories.some(c=>c.id===r.section))).map(r=>({id:String(r.id||''),category:r.section==='ACTIVESAFETY'?'OSTATNI':r.section,title:String(r.title||''),body:String(r.content||''),createdAt:r.date,authorName:String(r.author||''),attachments:Array.isArray(r.attachments)?r.attachments.filter(f=>f&&f.id).map(f=>({name:String(f.name||'Příloha'),id:String(f.id)})):[]}));
- authenticated=true;logout.classList.remove('hide');render();
+ authenticated=true;document.getElementById('appHeader').classList.remove('hide');logout.classList.remove('hide');render();
  }catch(err){if(g===generation)loginScreen('Nepodařilo se připojit: '+err.message);}
 }
 document.addEventListener('click',async e=>{
