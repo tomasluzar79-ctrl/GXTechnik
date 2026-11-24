@@ -169,10 +169,10 @@ async function init(){
 }
 document.addEventListener('click',async e=>{
  const b=e.target.closest('[data-download]');if(!b||!authenticated)return;
- b.disabled=true;const g=generation;
- try{const data=await api('download',{fileId:b.dataset.download});if(g!==generation)return;if(!data.success)throw new Error(data.error||'Stažení selhalo.');
- const bytes=Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0));const url=URL.createObjectURL(new Blob([bytes],{type:'application/octet-stream'}));const a=document.createElement('a');a.href=url;a.download=data.name||'priloha';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
- }catch(err){alert(err.message);}finally{b.disabled=false;}
+ b.disabled=true;const g=generation;const preview=window.open('','_blank');if(preview){preview.opener=null;preview.document.body.textContent='Načítám přílohu…';}
+ try{const data=await api('download',{fileId:b.dataset.download});if(g!==generation){if(preview)preview.close();return;}if(!data.success)throw new Error(data.error||'Stažení selhalo.');
+ const bytes=Uint8Array.from(atob(data.base64),c=>c.charCodeAt(0));const name=data.name||'priloha';const ext=name.split('.').pop().toLowerCase();const types={pdf:'application/pdf',jpg:'image/jpeg',jpeg:'image/jpeg',png:'image/png',webp:'image/webp',gif:'image/gif'};const mime=types[ext]||data.mimeType||'application/octet-stream';const url=URL.createObjectURL(new Blob([bytes],{type:mime}));if(types[ext]&&preview&&!preview.closed){preview.location.replace(url);}else{if(preview&&!preview.closed)preview.close();const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();a.remove();}setTimeout(()=>URL.revokeObjectURL(url),600000);
+ }catch(err){if(preview&&!preview.closed)preview.close();alert(err.message);}finally{b.disabled=false;}
 });
 init();
 </script>
