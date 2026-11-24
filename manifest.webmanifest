@@ -9,8 +9,8 @@
   "theme_color": "#094889",
   "icons": [
     {
-      "src": "./IKONA%20GX%20TECHNIK.png",
-      "sizes": "1000x928",
+      "src": "./GXAS.png",
+      "sizes": "1248x1248",
       "type": "image/png",
       "purpose": "any"
     }
