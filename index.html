@@ -101,6 +101,11 @@
 .menu-hero p{margin:0}
 .menu-hero img{display:block;width:100%;height:auto;mask-image:linear-gradient(to right,transparent,#000 10%)}
 @media(max-width:520px){.hero.menu-hero{grid-template-columns:1fr}.menu-hero img{width:min(100%,280px);justify-self:center;mask-image:none}}
+.gallery-player{width:min(92vw,920px);max-height:92vh;border:0;border-radius:14px;padding:14px;color:var(--ink)}
+.gallery-player::backdrop{background:#071e36cf}
+.gallery-player header{position:static;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;background:white;color:var(--ink)}
+.gallery-player strong{overflow-wrap:anywhere}
+.gallery-player video{width:100%;max-height:72vh;background:#111}
 </style>
 </head>
 <body>
@@ -266,6 +271,61 @@ async function galleryHome(){
     target.textContent = 'Chyba načítání: ' + err.message;
   }
 }
+async function playGalleryVideo(item, tile){
+  closePreview();
+  const dialog = document.createElement('dialog');
+  dialog.className = 'gallery-player';
+  dialog.innerHTML = '<header><strong></strong><button class="btn secondary" type="button">Zavřít</button></header><p role="status">Načítám video…</p><video controls playsinline hidden></video>';
+  dialog.querySelector('strong').textContent = item.name;
+  dialog.setAttribute('aria-label', item.name);
+  const video = dialog.querySelector('video');
+  const status = dialog.querySelector('p');
+  const controller = new AbortController();
+  const session = generation;
+  let url;
+  function close(){
+    controller.abort();
+    video.pause();
+    video.removeAttribute('src');
+    video.load();
+    if(url) URL.revokeObjectURL(url);
+    dialog.remove();
+    if(closePreview === close) closePreview = () => {};
+    if(tile.isConnected) tile.focus();
+  }
+  closePreview = close;
+  dialog.querySelector('button').onclick = close;
+  dialog.oncancel = e => { e.preventDefault(); close(); };
+  document.body.append(dialog);
+  dialog.showModal();
+  try{
+    const parts = [];
+    let offset = 0, size, mime;
+    do {
+      const data = await api('galleryVideo', {fileId:item.id, offset}, controller.signal);
+      if(controller.signal.aborted) return;
+      if(generation !== session || !tile.isConnected){ close(); return; }
+      if(!data.success) throw new Error(data.error || 'Video nelze načíst.');
+      const bytes = Uint8Array.from(atob(data.base64), c => c.charCodeAt(0));
+      if(!Number.isSafeInteger(data.size) || (offset && size !== data.size) || !bytes.length || offset + bytes.length > data.size) throw new Error('Data videa nejsou úplná.');
+      size = data.size;
+      mime = data.mimeType;
+      parts.push(bytes);
+      offset += bytes.length;
+      status.textContent = 'Načítám video… ' + Math.round(100 * offset / size) + ' %';
+    } while(offset < size);
+    url = URL.createObjectURL(new Blob(parts, {type:mime}));
+    parts.length = 0;
+    video.onerror = () => {status.hidden = false; status.textContent = 'Tento formát videa se v prohlížeči nepodařilo přehrát.';};
+    status.hidden = true;
+    video.hidden = false;
+    video.src = url;
+    video.play().catch(() => {});
+  }catch(err){
+    if(!controller.signal.aborted) status.textContent = err.message || 'Video se nepodařilo načíst.';
+  }
+}
+
 function galleryCategory(category){
   app.innerHTML = `
     <button class="back" id="galleryBack">
@@ -311,9 +371,7 @@ function galleryCategory(category){
     target.append(tile);
 
     if(item.type === 'video'){
-      tile.onclick = () => {
-        window.open(item.url,'_blank','noopener,noreferrer');
-      };
+      tile.onclick = () => playGalleryVideo(item, tile);
       continue;
     }
 
@@ -370,8 +428,8 @@ function galleryCategory(category){
 let token=localStorage.getItem('gx_session')||'',authenticated=false;
 let generation=0;
 const logout=document.getElementById('logout');
-async function api(action,extra={}){
- const res=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({action,token,...extra}),credentials:'omit',redirect:'follow'});
+async function api(action,extra={},signal){
+ const res=await fetch(API_URL,{signal,method:'POST',headers:{'Content-Type':'text/plain;charset=UTF-8'},body:JSON.stringify({action,token,...extra}),credentials:'omit',redirect:'follow'});
  if(!res.ok)throw new Error('Služba není dostupná.');
  return res.json();
 }
