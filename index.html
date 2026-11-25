@@ -96,7 +96,11 @@
 .brand-caption{font-size:clamp(17px,4vw,30px);letter-spacing:-.7px}.splash-name{font-size:clamp(22px,6vw,29px);letter-spacing:2px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin:auto}.tile{align-items:center;justify-content:center;text-align:center;min-height:145px}.tile .ico{justify-content:center;margin-bottom:8px}.tile .ico svg{width:56px;height:56px}.tile strong{font-size:17px}
 .header-gxas{display:block;width:100px;height:100px;object-fit:contain}.bar{min-height:100px}@media(max-width:740px){.header-gxas{width:86px;height:86px}.bar{min-height:86px}}
+.hero.menu-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(160px,34%);align-items:center;padding:0;overflow:hidden;background:#e6f2fd}
+.menu-hero div{padding:clamp(18px,3vw,30px)}
 .menu-hero p{margin:0}
+.menu-hero img{display:block;width:100%;height:auto;mask-image:linear-gradient(to right,transparent,#000 10%)}
+@media(max-width:520px){.hero.menu-hero{grid-template-columns:1fr}.menu-hero img{width:min(100%,280px);justify-self:center;mask-image:none}}
 </style>
 </head>
 <body>
@@ -138,8 +142,9 @@ function editor(){if(currentUser?.role!=='admin')return home();app.innerHTML=`<b
 function mainMenu(){
   app.innerHTML=`
     <section class="hero menu-hero">
-      <h1>Technika a galerie</h1>
-      <p>V sekci Technik najdeš montážní postupy a poznámky z terénu. V galerii si můžeš prohlédnout fotky a videa z realizací.</p>
+      <div><h1>Technika a galerie</h1>
+      <p>V sekci Technik najdeš montážní postupy a poznámky z terénu. V galerii si můžeš prohlédnout fotky a videa z realizací.</p></div>
+      <img src="sklad-vzv.png?v=zrcadlo" width="1536" height="1024" alt="Vysokozdvižný vozík pod skladovým zrcadlem s rozsvíceným LED prstencem">
     </section>
     <div class="grid">
       <a class="tile" href="#technika">
