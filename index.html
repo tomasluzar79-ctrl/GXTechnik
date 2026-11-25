@@ -106,6 +106,8 @@
 .gallery-player header{position:static;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-bottom:10px;background:white;color:var(--ink)}
 .gallery-player strong{overflow-wrap:anywhere}
 .gallery-player video{width:100%;max-height:72vh;background:#111}
+.video-thumbnail{position:relative}
+.video-thumbnail::after{content:'▶';position:absolute;bottom:8px;right:8px;display:grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#092b4ddd;color:white;font-size:14px;pointer-events:none}
 </style>
 </head>
 <body>
@@ -370,14 +372,11 @@ function galleryCategory(category){
     tile.append(preview,name);
     target.append(tile);
 
-    if(item.type === 'video'){
-      tile.onclick = () => playGalleryVideo(item, tile);
-      continue;
-    }
-
+    const isVideo = item.type === 'video';
+    if(isVideo) tile.setAttribute('aria-label', 'Přehrát video ' + item.name);
     let photo = null;
 
-    tile.onclick = async () => {
+    tile.onclick = isVideo ? () => playGalleryVideo(item, tile) : async () => {
       try{
         const data = photo || await api(
           'galleryImage',{fileId:item.id}
@@ -398,13 +397,13 @@ function galleryCategory(category){
 
       try{
         const data = await api(
-          'galleryImage',{fileId:item.id}
+          isVideo ? 'galleryVideoThumbnail' : 'galleryImage', {fileId:item.id}
         );
 
         if(g !== generation || !tile.isConnected) return;
         if(!data.success) throw new Error(data.error);
 
-        photo = data;
+        if(!isVideo) photo = data;
 
         const img = document.createElement('img');
         img.src = 'data:' + data.mimeType +
@@ -414,10 +413,11 @@ function galleryCategory(category){
         img.style.cssText =
           'width:100%;height:100%;object-fit:cover';
 
+        if(isVideo) preview.classList.add('video-thumbnail');
         preview.replaceChildren(img);
 
       }catch(err){
-        preview.textContent = 'Náhled není dostupný';
+        preview.textContent = isVideo ? '▶ Video' : 'Náhled není dostupný';
       }
     });
 
