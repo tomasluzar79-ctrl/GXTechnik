@@ -187,6 +187,36 @@ function render(){
     app.prepend(p);
   }
 }
+const galleryOnlyCategories = [
+  {
+    id: 'LIDAR', name: 'LiDAR',
+    desc: 'Laserové skenování prostoru',
+    icon: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M12 27a27 27 0 0 1 40 0M19 32a18 18 0 0 1 26 0M26 37a9 9 0 0 1 12 0"/><rect x="20" y="40" width="24" height="13" rx="4" fill="currentColor"/><path d="M18 56h28"/></svg>'
+  },
+  {
+    id: 'DETEKCE_OSOB', name: 'Detekce osob',
+    desc: 'Rozpoznání osob ve sledované zóně',
+    icon: '<svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 22V10h13m22 0h13v12M8 42v12h13m22 0h13V42"/><circle cx="32" cy="24" r="7" fill="currentColor"/><path d="M19 46v-3a13 13 0 0 1 26 0v3Z" fill="currentColor"/></svg>'
+  }
+];
+
+function galleryPresentation(folder){
+  const key = value => norm(value).replace(/[^a-z0-9]/g, '');
+  const keys = [key(folder.id), key(folder.name)];
+  return [...categories, ...galleryOnlyCategories].find(category =>
+    keys.includes(key(category.id)) || keys.includes(key(category.name))
+  ) || {name: folder.name, icon: cat('OSTATNI').icon};
+}
+
+function galleryTile(folder){
+  const category = galleryPresentation(folder);
+  return `<button class="tile" type="button" data-gallery="${esc(folder.id)}">
+    <span class="ico">${category.icon}</span>
+    <strong>${esc(category.name)}</strong>
+    ${category.desc ? `<span>${esc(category.desc)}</span>` : ''}
+  </button>`;
+}
+
 async function galleryHome(){
   const g = generation;
 
@@ -213,18 +243,7 @@ async function galleryHome(){
 
     target.className = 'grid';
 
-    target.innerHTML = data.categories.map(c => `
-      <button class="tile" type="button"
-        data-gallery="${esc(c.id)}">
-        <span class="ico">
-          <svg viewBox="0 0 64 64">
-            <path d="M5 15H25L31 22H59V54H5Z"/>
-          </svg>
-        </span>
-        <strong>${esc(c.name)}</strong>
-        <span>${c.items.length} souborů</span>
-      </button>
-    `).join('');
+    target.innerHTML = data.categories.map(galleryTile).join('');
 
     target.onclick = e => {
       const b = e.target.closest('[data-gallery]');
@@ -247,7 +266,7 @@ function galleryCategory(category){
       ← Galerie
     </button>
     <section class="hero">
-      <h1>${esc(category.name)}</h1>
+      <h1>${esc(galleryPresentation(category).name)}</h1>
       <p>${category.items.length} souborů</p>
     </section>
     <div class="grid" id="galleryItems"></div>`;
