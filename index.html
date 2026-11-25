@@ -96,10 +96,7 @@
 .brand-caption{font-size:clamp(17px,4vw,30px);letter-spacing:-.7px}.splash-name{font-size:clamp(22px,6vw,29px);letter-spacing:2px}
 .grid{grid-template-columns:repeat(2,minmax(0,1fr));max-width:720px;margin:auto}.tile{align-items:center;justify-content:center;text-align:center;min-height:145px}.tile .ico{justify-content:center;margin-bottom:8px}.tile .ico svg{width:56px;height:56px}.tile strong{font-size:17px}
 .header-gxas{display:block;width:100px;height:100px;object-fit:contain}.bar{min-height:100px}@media(max-width:740px){.header-gxas{width:86px;height:86px}.bar{min-height:86px}}
-.hero.menu-hero{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 0 0 clamp(18px,3vw,30px);overflow:hidden;background:#e8f3fb}
 .menu-hero p{margin:0}
-.menu-hero img{display:block;width:clamp(115px,32%,300px);height:auto;flex:none;mask-image:linear-gradient(to right,transparent,#000 18%)}
-@media(max-width:480px){.menu-hero h1{font-size:23px}.hero.menu-hero{min-height:118px;gap:6px}.menu-hero img{width:36%}}
 </style>
 </head>
 <body>
@@ -141,8 +138,8 @@ function editor(){if(currentUser?.role!=='admin')return home();app.innerHTML=`<b
 function mainMenu(){
   app.innerHTML=`
     <section class="hero menu-hero">
-      <div><h1>Technika a galerie</h1><p>Vyber oblast aplikace</p></div>
-      <img src="sklad-vzv.png" width="1536" height="1024" alt="">
+      <h1>Technika a galerie</h1>
+      <p>V sekci Technik najdeš montážní postupy a poznámky z terénu. V galerii si můžeš prohlédnout fotky a videa z realizací.</p>
     </section>
     <div class="grid">
       <a class="tile" href="#technika">
@@ -151,7 +148,7 @@ function mainMenu(){
             <path d="M40 8a16 16 0 0 0-20 20L6 42a8 8 0 0 0 12 12l14-14A16 16 0 0 0 52 20L42 30 32 20Z"/>
           </svg>
         </span>
-        <strong>Technika</strong>
+        <strong>TECHNIK</strong>
       </a>
       <a class="tile" href="#galerie">
         <span class="ico">
