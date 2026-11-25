@@ -230,6 +230,23 @@ function galleryTile(folder){
   </button>`;
 }
 
+let galleryIndex;
+const galleryThumbs = new Map();
+
+function galleryData(){
+  if(galleryIndex && galleryIndex.until > Date.now()) return galleryIndex.request;
+  const entry = {until:Date.now() + 60000};
+  entry.request = api('gallery').then(data => {
+    if(!data.success) throw new Error(data.error || 'Galerii se nepodařilo načíst.');
+    return data;
+  }).catch(err => {
+    if(galleryIndex === entry) galleryIndex = undefined;
+    throw err;
+  });
+  galleryIndex = entry;
+  return entry.request;
+}
+
 async function galleryHome(){
   const g = generation;
 
@@ -246,7 +263,7 @@ async function galleryHome(){
   const target = document.getElementById('galleryResults');
 
   try {
-    const data = await api('gallery');
+    const data = await galleryData();
 
     if(g !== generation || !target.isConnected) return;
 
@@ -374,11 +391,11 @@ function galleryCategory(category){
 
     const isVideo = item.type === 'video';
     if(isVideo) tile.setAttribute('aria-label', 'Přehrát video ' + item.name);
-    let photo = null;
+
 
     tile.onclick = isVideo ? () => playGalleryVideo(item, tile) : async () => {
       try{
-        const data = photo || await api(
+        const data = await api(
           'galleryImage',{fileId:item.id}
         );
 
@@ -396,18 +413,18 @@ function galleryCategory(category){
       observer.disconnect();
 
       try{
-        const data = await api(
-          isVideo ? 'galleryVideoThumbnail' : 'galleryImage', {fileId:item.id}
-        );
-
-        if(g !== generation || !tile.isConnected) return;
-        if(!data.success) throw new Error(data.error);
-
-        if(!isVideo) photo = data;
-
+        const key = item.id + ':' + (item.modified || '');
+        let source = galleryThumbs.get(key);
+        if(!source){
+          const data = await api('galleryThumbnail', {fileId:item.id});
+          if(g !== generation || !tile.isConnected) return;
+          if(!data.success) throw new Error('Náhled není dostupný');
+          source = 'data:' + data.mimeType + ';base64,' + data.base64;
+          if(galleryThumbs.size >= 80) galleryThumbs.delete(galleryThumbs.keys().next().value);
+          galleryThumbs.set(key, source);
+        }
         const img = document.createElement('img');
-        img.src = 'data:' + data.mimeType +
-          ';base64,' + data.base64;
+        img.src = source;
 
         img.alt = item.name;
         img.style.cssText =
@@ -434,6 +451,7 @@ async function api(action,extra={},signal){
  return res.json();
 }
 function loginScreen(message=''){
+ galleryIndex=undefined;galleryThumbs.clear();
  generation++;authenticated=false;records=[];logout.classList.add('hide');document.getElementById('appHeader').classList.add('hide');
  app.innerHTML='<section class="panel" style="max-width:420px;margin:30px auto"><img src="GXAS.png" alt="GX ActiveSafety" style="display:block;width:100px;margin:auto"><h2>Přihlášení technika</h2><form id="loginForm"><div class="field"><label for="password">Přístupové heslo</label><input id="password" type="password" required autocomplete="current-password"></div><button class="btn" type="submit">Přihlásit se</button><p id="loginStatus" role="status"></p></form></section>';
  const status=document.getElementById('loginStatus');status.textContent=message;
@@ -447,6 +465,7 @@ logout.onclick=()=>{token='';localStorage.removeItem('gx_session');loginScreen()
 async function init(){
  if(!token)return loginScreen();
  const g=++generation;
+ if(!location.hash || location.hash === '#galerie') galleryData().catch(()=>{});
  app.innerHTML='<div class="empty">Načítám záznamy…</div>';
  try{
  const data=await api('records');if(g!==generation)return;
