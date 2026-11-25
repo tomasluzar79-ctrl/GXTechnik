@@ -130,11 +130,217 @@ function card(r){return `<button type="button" class="record" data-open="${esc(r
 function heading(title,subtitle=''){return `<section class="hero"><h1>${esc(title)}</h1>${subtitle?`<p>${esc(subtitle)}</p>`:''}<input class="search" id="search" type="search" placeholder="Hledat v technických záznamech…" aria-label="Hledat záznamy"></section>`}
 function bindSearch(source){const input=document.getElementById('search'),target=document.getElementById('results'),label=document.getElementById('listTitle');if(!input||!target)return;const initial=target.innerHTML;const initialLabel=label?.textContent;input.addEventListener('input',()=>{const query=norm(input.value.trim());if(!query){target.innerHTML=initial;if(label)label.textContent=initialLabel;return}const terms=query.split(/\s+/).filter(Boolean);const filtered=sorted().filter(r=>{const haystack=norm([r.title,r.body,r.category,cat(r.category)?.desc,r.authorName,...(r.attachments||[]).map(x=>x.name)].join(' '));return terms.every(term=>haystack.includes(term))});if(label)label.textContent='Výsledky hledání ('+filtered.length+')';target.innerHTML=filtered.length?filtered.map(card).join(''):'<div class="empty">Žádné odpovídající záznamy.</div>'})}
 function home(){const all=sorted();app.innerHTML=heading('Hledej napříč tématy')+`<h2 id="listTitle">Kategorie</h2><div id="results"><div class="grid">${categories.map(c=>`<a class="tile" href="#category/${c.id}"><span class="ico">${c.icon}</span><strong>${esc(c.name)}</strong></a>`).join('')}</div></div>`;bindSearch(all)}
-function category(id){const c=cat(id);if(!c)return home();const all=sorted().filter(r=>r.category===id);app.innerHTML=`<button class="back" data-back="#">← Záznamy</button>`+heading(c.name,c.desc)+`<h2 id="listTitle">Záznamy</h2><div id="results">${all.length?all.map(card).join(''):'<div class="empty">V této sekci zatím nejsou žádné záznamy.</div>'}</div>`;bindSearch(all)}
+function category(id){const c=cat(id);if(!c)return home();const all=sorted().filter(r=>r.category===id);app.innerHTML=`<button class="back" data-back="#technika">← Záznamy</button>`+heading(c.name,c.desc)+`<h2 id="listTitle">Záznamy</h2><div id="results">${all.length?all.map(card).join(''):'<div class="empty">V této sekci zatím nejsou žádné záznamy.</div>'}</div>`;bindSearch(all)}
 function detail(id){const r=records.find(x=>x.id===id);if(!r)return home();const files=(r.attachments||[]).filter(f=>f.id);app.innerHTML=`<button class="back" data-back="#category/${esc(r.category)}">← ${esc(cat(r.category)?.name||r.category)}</button><section class="hero"><span class="badge">${esc(cat(r.category)?.name||r.category)}</span><h1 style="margin-top:12px">${esc(r.title)}</h1><p>${date(r.createdAt)} · Zapsal(a): ${esc(r.authorName)}</p></section><div class="panel"><h2 style="margin-top:0">Informace</h2><div class="content">${esc(r.body)}</div>${files.length?`<h2>Přílohy</h2><div class="attachments">${files.map(f=>`<button type="button" class="attachment" data-download="${esc(f.id)}">📎 ${esc(f.name)} ↓</button>`).join('')}</div>`:''}</div>`}
 function editor(){if(currentUser?.role!=='admin')return home();app.innerHTML=`<button class="back" data-back="#">← Zpět</button><section class="hero"><h1>Nový technický záznam</h1><p>Datum a autor se doplní automaticky.</p></section><div class="notice">Pro ukládání záznamů a souborů je potřeba připojit zabezpečený backend Google Apps Script. Tento formulář zatím nic neodesílá.</div><form id="entryForm" class="panel"><div class="field"><label for="entryCat">Oblast</label><select id="entryCat">${categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select></div><div class="field"><label for="entryDate">Datum</label><input id="entryDate" disabled value="${new Date().toLocaleDateString('cs-CZ')}"></div><div class="field"><label for="entryAuthor">Autor</label><input id="entryAuthor" disabled value="${esc(currentUser.name)}"></div><div class="field"><label for="entryTitle">Název záznamu</label><input id="entryTitle" required maxlength="160" placeholder="Například montáž RFID čtečky"></div><div class="field"><label for="entryBody">Text záznamu</label><textarea id="entryBody" required placeholder="Postup, upozornění, technické poznámky…"></textarea></div><div class="field"><label for="entryFiles">Přílohy</label><input id="entryFiles" type="file" multiple accept="image/*,.pdf,.doc,.docx,.xls,.xlsx,.txt"></div><button class="btn" type="submit" disabled>Uložit záznam (po připojení backendu)</button></form>`}
-function render(){if(!authenticated)return;const hash=decodeURIComponent(location.hash.slice(1));if(hash.startsWith('category/'))category(hash.slice(9));else if(hash.startsWith('record/'))detail(hash.slice(7));else if(hash==='new')editor();else home();if(loadError){const p=document.createElement('div');p.className='notice';p.textContent=loadError;app.prepend(p)}}
-document.addEventListener('click',e=>{const rec=e.target.closest('[data-open]');if(rec)location.hash='record/'+encodeURIComponent(rec.dataset.open);const back=e.target.closest('[data-back]');if(back)location.hash=back.dataset.back});adminButton.addEventListener('click',()=>location.hash='new');window.addEventListener('hashchange',render);
+
+function mainMenu(){
+  app.innerHTML=`
+    <section class="hero">
+      <h1>GX ActiveSafety</h1>
+      <p>Vyber oblast aplikace</p>
+    </section>
+    <div class="grid">
+      <a class="tile" href="#technika">
+        <span class="ico">
+          <svg viewBox="0 0 64 64">
+            <path d="M40 8a16 16 0 0 0-20 20L6 42a8 8 0 0 0 12 12l14-14A16 16 0 0 0 52 20L42 30 32 20Z"/>
+          </svg>
+        </span>
+        <strong>Technika</strong>
+      </a>
+      <a class="tile" href="#galerie">
+        <span class="ico">
+          <svg viewBox="0 0 64 64">
+            <rect x="5" y="8" width="54" height="48" rx="5"/>
+            <circle cx="43" cy="22" r="6"/>
+            <path d="M5 46L22 28 37 43 46 34 59 48"/>
+          </svg>
+        </span>
+        <strong>Galerie</strong>
+      </a>
+    </div>`;
+}
+
+function render(){
+  if(!authenticated)return;
+  const hash=decodeURIComponent(location.hash.slice(1));
+
+  if(hash.startsWith('category/')){
+    category(hash.slice(9));
+  }else if(hash.startsWith('record/')){
+    detail(hash.slice(7));
+  }else if(hash==='new'){
+    editor();
+  }else if(hash==='technika'){
+    home();
+  }else if(hash==='galerie'){
+    galleryHome();
+  }else{
+    mainMenu();
+  }
+
+  if(loadError){
+    const p=document.createElement('div');
+    p.className='notice';
+    p.textContent=loadError;
+    app.prepend(p);
+  }
+}
+async function galleryHome(){
+  const g = generation;
+
+  app.innerHTML = `
+    <button class="back" data-back="#">← Úvod</button>
+    <section class="hero">
+      <h1>Galerie řešení</h1>
+      <p>Fotografie a videa realizací</p>
+    </section>
+    <div id="galleryResults" class="empty">
+      Načítám galerii…
+    </div>`;
+
+  const target = document.getElementById('galleryResults');
+
+  try {
+    const data = await api('gallery');
+
+    if(g !== generation || !target.isConnected) return;
+
+    if(!data.success){
+      throw new Error(data.error);
+    }
+
+    target.className = 'grid';
+
+    target.innerHTML = data.categories.map(c => `
+      <button class="tile" type="button"
+        data-gallery="${esc(c.id)}">
+        <span class="ico">
+          <svg viewBox="0 0 64 64">
+            <path d="M5 15H25L31 22H59V54H5Z"/>
+          </svg>
+        </span>
+        <strong>${esc(c.name)}</strong>
+        <span>${c.items.length} souborů</span>
+      </button>
+    `).join('');
+
+    target.onclick = e => {
+      const b = e.target.closest('[data-gallery]');
+      if(!b) return;
+
+      const category = data.categories.find(
+        c => c.id === b.dataset.gallery
+      );
+
+      if(category) galleryCategory(category);
+    };
+
+  } catch(err){
+    target.textContent = 'Chyba načítání: ' + err.message;
+  }
+}
+function galleryCategory(category){
+  app.innerHTML = `
+    <button class="back" id="galleryBack">
+      ← Galerie
+    </button>
+    <section class="hero">
+      <h1>${esc(category.name)}</h1>
+      <p>${category.items.length} souborů</p>
+    </section>
+    <div class="grid" id="galleryItems"></div>`;
+
+  document.getElementById('galleryBack').onclick =
+    galleryHome;
+
+  const target = document.getElementById('galleryItems');
+  const g = generation;
+
+  if(!category.items.length){
+    target.innerHTML =
+      '<div class="empty">Kategorie je zatím prázdná.</div>';
+    return;
+  }
+
+  for(const item of category.items){
+    const tile = document.createElement('button');
+    tile.className = 'tile';
+    tile.type = 'button';
+
+    const preview = document.createElement('div');
+    preview.style.cssText =
+      'width:100%;aspect-ratio:4/3;display:grid;place-items:center;background:#eef4fa;border-radius:9px;overflow:hidden';
+
+    preview.textContent = item.type === 'video'
+      ? '▶ Video'
+      : 'Načítám fotografii…';
+
+    const name = document.createElement('span');
+    name.textContent = item.name;
+    name.style.cssText =
+      'margin-top:10px;overflow-wrap:anywhere';
+
+    tile.append(preview,name);
+    target.append(tile);
+
+    if(item.type === 'video'){
+      tile.onclick = () => {
+        window.open(item.url,'_blank','noopener,noreferrer');
+      };
+      continue;
+    }
+
+    let photo = null;
+
+    tile.onclick = async () => {
+      try{
+        const data = photo || await api(
+          'galleryImage',{fileId:item.id}
+        );
+
+        if(g !== generation || !tile.isConnected) return;
+        if(!data.success) throw new Error(data.error);
+
+        await showAttachment(data);
+      }catch(err){
+        alert(err.message);
+      }
+    };
+
+    const observer = new IntersectionObserver(async entries => {
+      if(!entries.some(e => e.isIntersecting)) return;
+      observer.disconnect();
+
+      try{
+        const data = await api(
+          'galleryImage',{fileId:item.id}
+        );
+
+        if(g !== generation || !tile.isConnected) return;
+        if(!data.success) throw new Error(data.error);
+
+        photo = data;
+
+        const img = document.createElement('img');
+        img.src = 'data:' + data.mimeType +
+          ';base64,' + data.base64;
+
+        img.alt = item.name;
+        img.style.cssText =
+          'width:100%;height:100%;object-fit:cover';
+
+        preview.replaceChildren(img);
+
+      }catch(err){
+        preview.textContent = 'Náhled není dostupný';
+      }
+    });
+
+    observer.observe(tile);
+  }
+}document.addEventListener('click',e=>{const rec=e.target.closest('[data-open]');if(rec)location.hash='record/'+encodeURIComponent(rec.dataset.open);const back=e.target.closest('[data-back]');if(back)location.hash=back.dataset.back});adminButton.addEventListener('click',()=>location.hash='new');window.addEventListener('hashchange',render);
 
 let token=localStorage.getItem('gx_session')||'',authenticated=false;
 let generation=0;
