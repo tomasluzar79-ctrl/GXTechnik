@@ -537,6 +537,335 @@ document.addEventListener('click',async e=>{
  try{const data=await api('download',{fileId:b.dataset.download});if(g!==generation)return;if(!data.success)throw new Error(data.error||'Stažení selhalo.');await showAttachment(data);}
  catch(err){alert(err.message);}finally{b.disabled=false;}
 });
+
+/* CZ / PL lokalizace aplikace GX ActiveSafety */
+
+const translationsPL = {
+  'Technika a galerie': 'Technika i galeria',
+  'V sekci Technik najdeš montážní postupy a poznámky z terénu. V galerii si můžeš prohlédnout fotky a videa z realizací.': 'W sekcji Technik znajdziesz instrukcje montażu i notatki z realizacji. W galerii możesz przeglądać zdjęcia i filmy z realizacji.',
+  'Galerie': 'Galeria',
+  'Galerie řešení': 'Galeria rozwiązań',
+  'Fotografie a videa realizací': 'Zdjęcia i filmy z realizacji',
+  'Projekce': 'Projekcje świetlne',
+  'LED signalizace': 'Sygnalizacja LED',
+  'AI kamery': 'Kamery AI',
+  'Branky a závory': 'Bramki i szlabany',
+  'Detekce osob': 'Wykrywanie osób',
+  'Laserové skenování prostoru': 'Laserowe skanowanie przestrzeni',
+  'Rozpoznání osob ve sledované zóně': 'Wykrywanie osób w monitorowanej strefie',
+  'Ostatní': 'Pozostałe',
+  'Přihlášení technika': 'Logowanie technika',
+  'Přístupové heslo': 'Hasło dostępu',
+  'Přihlásit se': 'Zaloguj się',
+  'Odhlásit': 'Wyloguj się',
+  'Ověřuji…': 'Weryfikacja…',
+  'Kategorie': 'Kategorie',
+  'Hledej napříč tématy': 'Szukaj we wszystkich kategoriach',
+  'Hledat v technických záznamech…': 'Szukaj w dokumentacji technicznej…',
+  'Hledat záznamy': 'Szukaj wpisów',
+  'Záznamy': 'Wpisy',
+  'Informace': 'Informacje',
+  'Přílohy': 'Załączniki',
+  'Zapsal(a):': 'Autor:',
+  '← Úvod': '← Strona główna',
+  '← Galerie': '← Galeria',
+  '← Záznamy': '← Wpisy',
+  '← Zpět': '← Wstecz',
+  'Načítám galerii…': 'Wczytywanie galerii…',
+  'Načítám fotografii…': 'Wczytywanie zdjęcia…',
+  'Načítám záznamy…': 'Wczytywanie wpisów…',
+  'Načítám video…': 'Wczytywanie filmu…',
+  'Načítám PDF…': 'Wczytywanie PDF…',
+  'Náhled není dostupný': 'Podgląd niedostępny',
+  'Kategorie je zatím prázdná.': 'Kategoria jest jeszcze pusta.',
+  'V této sekci zatím nejsou žádné záznamy.': 'W tej sekcji nie ma jeszcze żadnych wpisów.',
+  'Žádné odpovídající záznamy.': 'Brak pasujących wpisów.',
+  'Výsledky hledání': 'Wyniki wyszukiwania',
+  '▶ Video': '▶ Film',
+  'Přehrát video': 'Odtwórz film',
+  'Video nelze načíst.': 'Nie można wczytać filmu.',
+  'Video se nepodařilo načíst.': 'Nie udało się wczytać filmu.',
+  'Data videa nejsou úplná.': 'Dane filmu są niekompletne.',
+  'Tento formát videa se v prohlížeči nepodařilo přehrát.': 'Nie można odtworzyć tego formatu filmu w przeglądarce.',
+  'Galerii se nepodařilo načíst.': 'Nie udało się wczytać galerii.',
+  'Chyba načítání:': 'Błąd wczytywania:',
+  'Služba není dostupná.': 'Usługa jest niedostępna.',
+  'Přihlášení selhalo.': 'Logowanie nie powiodło się.',
+  'Nepodařilo se připojit:': 'Nie udało się nawiązać połączenia:',
+  'Neplatná odpověď služby.': 'Nieprawidłowa odpowiedź usługi.',
+  'Stažení selhalo.': 'Pobieranie nie powiodło się.',
+  'Zavřít': 'Zamknij',
+  'Uložit': 'Zapisz',
+  'Náhled PDF se nepodařilo načíst. Použij tlačítko Uložit.': 'Nie udało się wczytać podglądu PDF. Użyj przycisku Zapisz.',
+  'GX Solutions Bohemia · Interní technické informace': 'GX Solutions Bohemia · Wewnętrzne informacje techniczne',
+  '+ Nový záznam': '+ Nowy wpis',
+  'Nový technický záznam': 'Nowy wpis techniczny',
+  'Datum a autor se doplní automaticky.': 'Data i autor zostaną uzupełnieni automatycznie.',
+  'Oblast': 'Kategoria',
+  'Datum': 'Data',
+  'Autor': 'Autor',
+  'Název záznamu': 'Tytuł wpisu',
+  'Text záznamu': 'Treść wpisu',
+  'Například montáž RFID čtečky': 'Na przykład montaż czytnika RFID',
+  'Postup, upozornění, technické poznámky…': 'Procedura, ostrzeżenia, uwagi techniczne…',
+  'Uložit záznam (po připojení backendu)': 'Zapisz wpis (po podłączeniu systemu)',
+  'Pro ukládání záznamů a souborů je potřeba připojit zabezpečený backend Google Apps Script. Tento formulář zatím nic neodesílá.': 'Zapisywanie wpisów i plików wymaga podłączenia zabezpieczonego systemu Google Apps Script. Formularz nie wysyła jeszcze danych.'
+};
+
+let gxLanguage = localStorage.getItem('gx_language') === 'pl'
+  ? 'pl' : 'cs';
+
+const originalTexts = new WeakMap();
+const originalAttributes = new WeakMap();
+
+function gxTranslate(value) {
+  if (gxLanguage !== 'pl') return value;
+
+  const clean = value.trim();
+
+  if (translationsPL[clean]) {
+    return value.replace(clean, translationsPL[clean]);
+  }
+
+  if (/^\d+ souborů$/.test(clean)) {
+    const n = parseInt(clean, 10);
+    const word = n === 1 ? 'plik' :
+      n % 10 >= 2 && n % 10 <= 4 &&
+      !(n % 100 >= 12 && n % 100 <= 14)
+      ? 'pliki' : 'plików';
+    return value.replace(clean, n + ' ' + word);
+  }
+
+  if (/^📎 \d+ příloh$/.test(clean)) {
+    const n = parseInt(clean.replace('📎 ', ''), 10);
+    const word = n === 1 ? 'załącznik' :
+      n % 10 >= 2 && n % 10 <= 4 &&
+      !(n % 100 >= 12 && n % 100 <= 14)
+      ? 'załączniki' : 'załączników';
+    return '📎 ' + n + ' ' + word;
+  }
+
+  if (clean.startsWith('← ')) {
+    const name = clean.slice(2);
+    if (translationsPL[name]) {
+      return '← ' + translationsPL[name];
+    }
+  }
+
+  const prefixes = [
+    'Výsledky hledání',
+    'Načítám video…',
+    'Přehrát video',
+    'Chyba načítání:',
+    'Nepodařilo se připojit:',
+    'Zapsal(a):'
+  ];
+
+  for (const prefix of prefixes) {
+    if (clean.startsWith(prefix)) {
+      return value.replace(prefix, translationsPL[prefix]);
+    }
+  }
+
+  return value;
+}
+
+function gxProtected(element) {
+  if (!element) return true;
+
+  if (element.closest(
+    'script, style, svg, textarea, .content, .excerpt, ' +
+    '.record strong, .attachment, #galleryItems .tile > span, ' +
+    '.gallery-player strong, #gxLanguageSwitch'
+  )) return true;
+
+  if (element.matches('.hero h1') &&
+      location.hash.startsWith('#record/')) return true;
+
+  return false;
+}
+
+function gxApplyLanguage() {
+  document.documentElement.lang = gxLanguage;
+
+  document.title = gxLanguage === 'pl'
+    ? 'GX ActiveSafety | Informacje techniczne'
+    : 'GX ActiveSafety | Technické informace';
+
+  const walker = document.createTreeWalker(
+    document.body,
+    NodeFilter.SHOW_TEXT
+  );
+
+  let node;
+
+  while ((node = walker.nextNode())) {
+    if (gxProtected(node.parentElement)) continue;
+
+    let saved = originalTexts.get(node);
+
+    if (!saved || node.nodeValue !== saved.last) {
+      saved = {
+        original: node.nodeValue,
+        last: node.nodeValue
+      };
+    }
+
+    const translated = gxTranslate(saved.original);
+
+    saved.last = translated;
+    originalTexts.set(node, saved);
+
+    if (node.nodeValue !== translated) {
+      node.nodeValue = translated;
+    }
+  }
+
+  document.querySelectorAll(
+    '[placeholder], [aria-label]'
+  ).forEach(element => {
+    if (gxProtected(element)) return;
+
+    let saved = originalAttributes.get(element) || {};
+
+    ['placeholder', 'aria-label'].forEach(attr => {
+      if (!element.hasAttribute(attr)) return;
+
+      const current = element.getAttribute(attr);
+      let entry = saved[attr];
+
+      if (!entry || current !== entry.last) {
+        entry = {original: current, last: current};
+      }
+
+      const translated = gxTranslate(entry.original);
+
+      entry.last = translated;
+      saved[attr] = entry;
+
+      if (current !== translated) {
+        element.setAttribute(attr, translated);
+      }
+    });
+
+    originalAttributes.set(element, saved);
+  });
+
+  document.querySelectorAll(
+    '#gxLanguageSwitch button'
+  ).forEach(button => {
+    const active = button.dataset.lang === gxLanguage;
+    button.style.background = active ? '#094889' : '#fff';
+    button.style.color = active ? '#fff' : '#094889';
+    button.setAttribute('aria-pressed', String(active));
+  });
+}
+
+const gxLangStyle = document.createElement('style');
+
+gxLangStyle.textContent = `
+  #gxLanguageSwitch {
+    display:flex;
+    gap:4px;
+    align-items:center;
+    justify-content:center;
+    padding:4px;
+    border:1px solid #dce5ed;
+    border-radius:10px;
+    background:#fff;
+  }
+
+  #gxLanguageSwitch button {
+    border:0;
+    border-radius:6px;
+    padding:7px 9px;
+    font-size:13px;
+    font-weight:700;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+
+  #gxLanguageSwitch.login-language {
+    position:fixed;
+    top:12px;
+    right:12px;
+    z-index:10;
+  }
+
+  @media(max-width:520px) {
+    #gxLanguageSwitch button {
+      font-size:12px;
+      padding:6px;
+    }
+
+    #roleLabel {
+      display:none;
+    }
+  }
+`;
+
+document.head.append(gxLangStyle);
+
+const gxSwitch = document.createElement('div');
+
+gxSwitch.id = 'gxLanguageSwitch';
+
+gxSwitch.innerHTML = `
+  <button type="button" data-lang="cs">🇨🇿 CZ</button>
+  <button type="button" data-lang="pl">🇵🇱 PL</button>
+`;
+
+gxSwitch.addEventListener('click', event => {
+  const button = event.target.closest('[data-lang]');
+  if (!button) return;
+
+  gxLanguage = button.dataset.lang;
+  localStorage.setItem('gx_language', gxLanguage);
+  gxApplyLanguage();
+});
+
+function gxPlaceSwitch() {
+  const header = document.getElementById('appHeader');
+
+  const loggedIn = !header.classList.contains('hide');
+
+  const destination = loggedIn
+    ? header.querySelector('.row')
+    : document.body;
+
+  gxSwitch.classList.toggle('login-language', !loggedIn);
+
+  if (gxSwitch.parentElement !== destination) {
+    destination.prepend(gxSwitch);
+  }
+}
+
+gxPlaceSwitch();
+gxApplyLanguage();
+
+let gxTranslationPending = false;
+
+const gxLanguageObserver = new MutationObserver(() => {
+  if (gxTranslationPending) return;
+
+  gxTranslationPending = true;
+
+  requestAnimationFrame(() => {
+    gxTranslationPending = false;
+    gxPlaceSwitch();
+    gxApplyLanguage();
+  });
+});
+
+gxLanguageObserver.observe(document.body, {
+  childList: true,
+  subtree: true,
+  characterData: true,
+  attributes: true,
+  attributeFilter: ['class', 'placeholder', 'aria-label']
+});
+
 init();
 </script>
 </body></html>
+
