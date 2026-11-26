@@ -232,7 +232,30 @@ function galleryTile(folder){
 
 let galleryIndex;
 const galleryThumbs = new Map();
+const thumbQueue = [];
+let thumbActive = 0;
 
+function runThumbQueue(){
+  while(thumbActive < 3 && thumbQueue.length){
+    const job = thumbQueue.shift();
+    thumbActive++;
+
+    Promise.resolve()
+      .then(job.task)
+      .then(job.resolve, job.reject)
+      .finally(() => {
+        thumbActive--;
+        runThumbQueue();
+      });
+  }
+}
+
+function queueThumbnail(task){
+  return new Promise((resolve, reject) => {
+    thumbQueue.push({task, resolve, reject});
+    runThumbQueue();
+  });
+}
 function galleryData(){
   if(galleryIndex && galleryIndex.until > Date.now()) return galleryIndex.request;
   const entry = {until:Date.now() + 60000};
@@ -416,7 +439,12 @@ function galleryCategory(category){
         const key = item.id + ':' + (item.modified || '');
         let source = galleryThumbs.get(key);
         if(!source){
-          const data = await api('galleryThumbnail', {fileId:item.id});
+         const data = await queueThumbnail(() => {
+  if(g !== generation || !tile.isConnected){
+    throw new Error('Načítání zrušeno');
+  }
+  return api('galleryThumbnail', {fileId:item.id});
+});
           if(g !== generation || !tile.isConnected) return;
           if(!data.success) throw new Error('Náhled není dostupný');
           source = 'data:' + data.mimeType + ';base64,' + data.base64;
